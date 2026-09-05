@@ -1,255 +1,348 @@
+/* =========================================================
+   RewardKu - FINAL STYLE.CSS
+   Versi lengkap: desktop + mobile + Reward page
+   ========================================================= */
+
+/* ---------- RESET ---------- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-:root {
-  --red: #d90416;
-  --red-dark: #a80010;
-  --gold: #f5b800;
-  --yellow: #ffd83d;
-  --white: #ffffff;
-  --text: #20252d;
-  --muted: #747b85;
-  --bg: #f6f7f9;
-  --green: #20a05a;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding-bottom: 90px;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f7f8;
+  color: #222;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
 
-/* =========================================
-   HEADER
-========================================= */
+button {
+  border: 0;
+  cursor: pointer;
+}
 
-.header {
-  background: linear-gradient(145deg, #b80010, #ed101e);
-  color: white;
-  padding: 24px 20px 75px;
-  border-radius: 0 0 35px 35px;
+button:disabled {
+  cursor: not-allowed;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- THEME ---------- */
+:root {
+  --red: #d71920;
+  --red-dark: #b90f16;
+  --red-light: #fff0f1;
+  --gold: #f5b400;
+  --gold-dark: #d99a00;
+  --green: #20a05a;
+  --text: #202124;
+  --muted: #777;
+  --border: #ececec;
+  --card: #ffffff;
+  --bg: #f7f7f8;
+  --shadow: 0 8px 24px rgba(0, 0, 0, .07);
+  --radius: 18px;
+}
+
+/* ---------- HEADER ---------- */
+header,
+.app-header,
+.top-header {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(135deg, var(--red), #ed2933);
+  color: #fff;
+  padding: 16px 20px;
+  box-shadow: 0 5px 18px rgba(215, 25, 32, .18);
+}
+
+.header-inner,
+.header-content,
+.header-row {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand,
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand-logo,
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: var(--red);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  font-size: 22px;
+  flex: 0 0 auto;
+}
+
+.brand h1,
+.logo-area h1,
+.brand-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+}
+
+.brand small,
+.logo-area small {
+  display: block;
+  opacity: .86;
+  font-size: 11px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-action,
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  font-size: 18px;
+}
+
+.header-action:hover,
+.icon-btn:hover {
+  background: rgba(255,255,255,.24);
+}
+
+/* ---------- MAIN CONTAINER ---------- */
+.container,
+.main-container,
+.app-container {
+  width: min(100% - 32px, 1100px);
+  margin: 0 auto;
+  padding: 22px 0 100px;
+}
+
+/* ---------- BALANCE CARD ---------- */
+.balance-card,
+.points-card,
+.balance {
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, var(--red), #ef3038);
+  color: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(215, 25, 32, .18);
+  margin-bottom: 20px;
 }
 
-.header::after {
+.balance-card::after,
+.points-card::after,
+.balance::after {
   content: "";
   position: absolute;
-  width: 220px;
-  height: 220px;
-  right: -100px;
-  top: -100px;
-  background: rgba(255, 215, 0, 0.15);
+  width: 170px;
+  height: 170px;
   border-radius: 50%;
+  right: -55px;
+  top: -75px;
+  background: rgba(255,255,255,.09);
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.balance-label,
+.points-label {
   position: relative;
   z-index: 1;
-}
-
-.logo {
-  width: 58px;
-  height: 58px;
-  background: linear-gradient(145deg, #fff, #fff4c2);
-  border: 3px solid var(--gold);
-  border-radius: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-  box-shadow: 0 5px 15px rgba(0,0,0,.2);
-}
-
-.brand h1 {
-  font-size: 30px;
-  letter-spacing: -1px;
-}
-
-.brand h1 span {
-  color: var(--gold);
-}
-
-.brand p {
-  margin-top: 4px;
   font-size: 13px;
   opacity: .9;
 }
 
-.header-user {
-  position: absolute;
-  right: 20px;
-  top: 28px;
-  display: flex;
-  gap: 12px;
-  font-size: 22px;
-  z-index: 2;
-}
-
-
-/* =========================================
-   CONTAINER
-========================================= */
-
-.container {
-  width: 100%;
-  max-width: 600px;
-  margin: -48px auto 0;
-  padding: 0 16px;
+.balance-value,
+.points-value {
   position: relative;
-  z-index: 3;
+  z-index: 1;
+  margin-top: 4px;
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 900;
+  letter-spacing: -.8px;
 }
 
-
-/* =========================================
-   BALANCE
-========================================= */
-
-.balance-card {
-  background: white;
-  border-radius: 25px;
-  padding: 22px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.09);
-  border: 1px solid #eee;
+.balance-value span,
+.points-value span {
+  font-size: .55em;
+  font-weight: 700;
+  opacity: .9;
 }
 
-.coin {
-  width: 75px;
-  height: 75px;
-  min-width: 75px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #ffd83d, #e5a800);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 40px;
-  border: 4px solid #fff1a8;
-  box-shadow: 0 5px 12px rgba(215,160,0,.25);
-}
-
-.balance-info p {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.balance-info h2 {
-  color: var(--red);
-  font-size: 35px;
-  margin: 3px 0;
-}
-
-.balance-info small {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-
-/* =========================================
-   QUICK MENU
-========================================= */
-
-.quick-menu {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin: 18px 0;
-}
-
-.quick-menu button {
-  border: none;
-  background: white;
-  border-radius: 17px;
-  padding: 12px 5px;
-  min-height: 105px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.06);
-  cursor: pointer;
-  color: var(--text);
-}
-
-.quick-icon {
-  width: 48px;
-  height: 48px;
-  margin: auto;
-  border-radius: 15px;
-  background: #fff0f1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-}
-
-.quick-menu strong {
-  display: block;
-  margin-top: 7px;
-  font-size: 13px;
-}
-
-.quick-menu small {
-  display: block;
-  color: var(--muted);
-  margin-top: 3px;
-  font-size: 9px;
-}
-
-
-/* =========================================
-   SECTION TITLE
-========================================= */
-
-.section-title {
+.balance-footer,
+.points-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 22px 2px 12px;
+  gap: 12px;
+  font-size: 12px;
+  opacity: .92;
 }
 
-.section-title h3 {
-  font-size: 22px;
-}
-
-.section-title span {
+.balance-footer button,
+.points-footer button {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #fff;
   color: var(--red);
-  font-size: 13px;
-  font-weight: bold;
+  font-weight: 800;
 }
 
+/* ---------- QUICK MENU ---------- */
+.quick-menu {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0 26px;
+}
 
-/* =========================================
-   MISSION
-========================================= */
+.quick-item,
+.quick-menu a,
+.quick-menu button {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 13px 8px;
+  color: var(--text);
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,.035);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
 
-.mission-card {
-  background: white;
-  border-radius: 18px;
-  padding: 13px;
-  margin-bottom: 10px;
+.quick-item:hover,
+.quick-menu a:hover,
+.quick-menu button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.quick-icon {
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 7px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--red-light);
+  color: var(--red);
+  font-size: 19px;
+}
+
+.quick-item span,
+.quick-menu a span,
+.quick-menu button span {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- SECTION ---------- */
+.section {
+  margin-top: 24px;
+}
+
+.section-title,
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 13px;
+}
+
+.section-title h2,
+.section-heading h2 {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.section-title p,
+.section-heading p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- MISSION CARDS ---------- */
+.mission-list,
+.missions,
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mission-card,
+.mission-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 15px;
+  box-shadow: 0 5px 18px rgba(0,0,0,.04);
   display: flex;
   align-items: center;
-  gap: 11px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+  gap: 12px;
+  min-width: 0;
 }
 
 .mission-icon {
-  width: 52px;
-  height: 52px;
-  min-width: 52px;
-  border-radius: 15px;
-  background: #fff0f1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  background: var(--red-light);
+  color: var(--red);
+  font-size: 22px;
 }
 
 .mission-info {
@@ -257,620 +350,864 @@ body {
   min-width: 0;
 }
 
-.mission-info h4 {
+.mission-info h3,
+.mission-card h3,
+.mission-item h3 {
   font-size: 14px;
-  margin-bottom: 4px;
+  font-weight: 900;
+  margin-bottom: 2px;
 }
 
-.mission-info p {
-  font-size: 10px;
+.mission-info p,
+.mission-card p,
+.mission-item p {
   color: var(--muted);
-  line-height: 1.35;
+  font-size: 11px;
 }
 
 .mission-reward {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
 }
 
-.mission-reward strong {
-  display: block;
-  color: var(--red);
-  font-size: 13px;
+.mission-reward span {
+  font-size: 12px;
+  color: var(--gold-dark);
+  font-weight: 900;
   white-space: nowrap;
-  margin-bottom: 6px;
 }
 
-.mission-reward button {
-  border: none;
-  background: linear-gradient(135deg, var(--red), #f01b29);
-  color: white;
-  border-radius: 9px;
-  padding: 8px 12px;
-  font-weight: bold;
+.mission-reward button,
+.mission-btn {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--gold);
+  color: #fff;
   font-size: 11px;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(217,4,22,.2);
+  font-weight: 900;
+  box-shadow: 0 4px 10px rgba(245,180,0,.22);
 }
 
+.mission-reward button:hover,
+.mission-btn:hover {
+  background: var(--gold-dark);
+}
 
-/* =========================================
-   STATUS MISI
-========================================= */
-
-.mission-reward button.claimed {
+.mission-reward button.claimed,
+.mission-btn.claimed {
   background: var(--green) !important;
-  color: #ffffff !important;
+  color: #fff !important;
   box-shadow: none !important;
   cursor: default !important;
   opacity: 1 !important;
 }
 
-.mission-reward button.claimed:disabled {
+.mission-reward button.claimed:disabled,
+.mission-btn.claimed:disabled {
   background: var(--green) !important;
-  color: #ffffff !important;
+  color: #fff !important;
   opacity: 1 !important;
 }
 
-
-/* =========================================
-   REWARD SECTION
-========================================= */
-
-.reward-section {
-  margin-top: 28px;
-  margin-bottom: 20px;
-  scroll-margin-top: 15px;
+/* ---------- INFO / NOTICE ---------- */
+.info-card,
+.notice-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 18px;
+  box-shadow: 0 5px 18px rgba(0,0,0,.035);
 }
 
-.reward-section .section-title {
+.info-card h3,
+.notice-card h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.info-card p,
+.notice-card p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- REWARD BANNER ---------- */
+.reward-banner {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 25px 2px 16px;
+  gap: 14px;
+  background: linear-gradient(135deg, #fff7d8, #fffdf1);
+  border: 1px solid #f4df8d;
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 18px 0;
 }
 
-.reward-section .section-title h3 {
-  margin: 0;
-  font-size: 26px;
-  font-weight: 800;
-  color: #20242c;
+.reward-banner::after {
+  content: "★";
+  position: absolute;
+  right: 20px;
+  bottom: -22px;
+  font-size: 95px;
+  color: rgba(245,180,0,.09);
 }
 
-.reward-section .section-title p {
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: #777;
+.reward-banner-content {
+  position: relative;
+  z-index: 1;
 }
 
+.reward-banner h3 {
+  color: #8c6500;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.reward-banner p {
+  margin-top: 2px;
+  color: #8c7a3f;
+  font-size: 11px;
+}
+
+.reward-banner button {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  padding: 10px 15px;
+  border-radius: 11px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* ---------- REWARD PAGE ---------- */
+#rewardSection {
+  margin-top: 8px;
+}
+
+.reward-header,
+.reward-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.reward-header h2,
+.reward-page-header h2 {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.reward-header p,
+.reward-page-header p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.reward-points,
 #rewardPoints {
-  color: var(--red);
-  font-size: 17px;
-  font-weight: 800;
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 11px;
+  border-radius: 12px;
+  background: #fff8dc;
+  color: #9a7000;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid #f4df8d;
 }
 
-
-/* =========================================
-   REWARD GRID
-========================================= */
-
-.reward-grid {
+.reward-grid,
+.rewards-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 13px;
 }
 
 .reward-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 12px;
-  border: 1px solid #eeeeee;
-  box-shadow: 0 5px 18px rgba(0,0,0,.06);
-  overflow: hidden;
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 5px 18px rgba(0,0,0,.04);
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
-.reward-card:active {
-  transform: scale(.98);
+.reward-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
-.reward-image {
-  width: 100%;
-  height: 105px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 16px;
-
-  background: linear-gradient(
-    135deg,
-    #fff5c7,
-    #ffe27a
-  );
-
-  font-size: 45px;
+.reward-card-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: var(--red-light);
+  color: var(--red);
+  font-size: 25px;
   margin-bottom: 11px;
 }
 
-.reward-info h4 {
-  margin: 0 0 4px;
+.reward-card h3 {
   font-size: 15px;
-  font-weight: 800;
-  color: #252933;
+  font-weight: 900;
 }
 
-.reward-info p {
-  margin: 0 0 11px;
-  font-size: 11px;
-  color: #888;
-}
-
-.reward-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-}
-
-.reward-bottom strong {
-  color: var(--red);
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-.reward-bottom button {
-  border: 0;
-  outline: 0;
-
-  background: linear-gradient(
-    135deg,
-    #e0001b,
-    #ff2338
-  );
-
-  color: white;
-
-  border-radius: 10px;
-
-  padding: 8px 12px;
-
-  font-size: 11px;
-  font-weight: 800;
-
-  cursor: pointer;
-
-  box-shadow: 0 4px 10px rgba(224,0,27,.22);
-}
-
-.reward-bottom button:active {
-  transform: scale(.95);
-}
-
-
-/* =========================================
-   RIWAYAT PENUKARAN
-========================================= */
-
-.history-box {
-  margin-top: 20px;
-  padding: 17px;
-
-  background: #ffffff;
-
-  border-radius: 20px;
-
-  box-shadow: 0 5px 18px rgba(0,0,0,.05);
-}
-
-.history-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 12px;
-}
-
-.history-title h3 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.history-title button {
-  border: 0;
-
-  background: #fff0f1;
-  color: var(--red);
-
-  border-radius: 8px;
-
-  padding: 6px 10px;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.history-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-
-  padding: 11px 0;
-
-  border-bottom: 1px solid #eeeeee;
-}
-
-.history-item:last-child {
-  border-bottom: 0;
-}
-
-.history-icon {
-  width: 42px;
-  height: 42px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 13px;
-
-  background: #fff5d5;
-
-  font-size: 22px;
-}
-
-.history-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.history-info strong {
-  display: block;
-
-  font-size: 12px;
-
-  color: #252933;
-}
-
-.history-info small {
-  display: block;
-
+.reward-card p {
+  min-height: 34px;
   margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
 
-  font-size: 9px;
+.reward-cost {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 13px;
+}
 
-  color: #999;
+.reward-cost strong {
+  color: var(--gold-dark);
+  font-size: 13px;
+}
+
+.reward-card button {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.reward-card button:hover {
+  background: var(--red-dark);
+}
+
+.reward-card button:disabled {
+  background: #d5d5d5;
+  color: #777;
+  cursor: not-allowed;
+}
+
+/* ---------- REWARD HISTORY ---------- */
+.reward-history,
+#rewardHistory {
+  margin-top: 24px;
+}
+
+.reward-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.reward-history-header h3 {
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.reward-history-header button,
+.clear-history-btn {
+  background: transparent;
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.history-list,
+.reward-history-list {
+  display: grid;
+  gap: 9px;
+}
+
+.history-item,
+.reward-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.history-item strong,
+.reward-history-item strong {
+  display: block;
+  font-size: 12px;
+}
+
+.history-item small,
+.reward-history-item small {
+  color: var(--muted);
+  font-size: 10px;
 }
 
 .history-points {
-  color: var(--red);
-
-  font-size: 11px;
-  font-weight: 800;
-
+  color: var(--gold-dark);
+  font-size: 12px;
+  font-weight: 900;
   white-space: nowrap;
 }
 
 .empty-history {
-  padding: 18px 5px;
-
-  text-align: center;
-
-  color: #999;
-
-  font-size: 11px;
-}
-
-
-/* =========================================
-   REWARD BANNER
-========================================= */
-
-.reward-banner {
-  margin: 18px 0;
-  padding: 18px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #bd0010, #ed101e);
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-  box-shadow: 0 7px 18px rgba(180,0,15,.2);
-}
-
-.reward-banner span {
-  font-size: 35px;
-}
-
-.reward-banner h3 {
-  color: var(--gold);
-  font-size: 20px;
-  margin-top: 5px;
-}
-
-.reward-banner p {
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-.reward-banner > strong {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--gold);
-  color: var(--red-dark);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 25px;
-}
-
-
-/* =========================================
-   REWARD MODAL
-========================================= */
-
-.reward-overlay {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 99999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  background: #fff;
+  border: 1px dashed #ddd;
+  border-radius: 14px;
   padding: 20px;
-
-  background: rgba(0,0,0,.65);
-
-  backdrop-filter: blur(4px);
-}
-
-.reward-modal {
-  width: 100%;
-  max-width: 360px;
-
-  padding: 24px 20px;
-
-  background: #ffffff;
-
-  border-radius: 24px;
-
   text-align: center;
-
-  box-shadow: 0 20px 60px rgba(0,0,0,.3);
-
-  animation: rewardPop .2s ease;
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.reward-modal-icon {
-  width: 70px;
-  height: 70px;
-
-  margin: 0 auto 12px;
-
-  display: flex;
+/* ---------- MODAL ---------- */
+.modal,
+.reward-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
   align-items: center;
   justify-content: center;
-
-  border-radius: 20px;
-
-  background: #fff5d5;
-
-  font-size: 38px;
+  padding: 18px;
+  background: rgba(0,0,0,.48);
 }
 
-.reward-modal h2 {
-  margin: 0 0 8px;
-
-  font-size: 21px;
-}
-
-.reward-modal p {
-  margin: 6px 0;
-
-  color: #777;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-}
-
-.reward-confirm {
-  width: 100%;
-
-  margin-top: 14px;
-
-  padding: 13px;
-
-  border: 0;
-  border-radius: 12px;
-
-  background: var(--red);
-
-  color: #ffffff;
-
-  font-size: 13px;
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-.reward-cancel {
-  width: 100%;
-
-  padding: 11px;
-
-  border: 0;
-
-  background: transparent;
-
-  color: #888;
-
-  font-size: 12px;
-
-  cursor: pointer;
-}
-
-@keyframes rewardPop {
-
-  from {
-    opacity: 0;
-    transform: scale(.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-}
-
-
-/* =========================================
-   BOTTOM NAVIGATION
-========================================= */
-
-.bottom-nav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 72px;
-  background: white;
+.modal.show,
+.modal.active,
+.reward-modal.show,
+.reward-modal.active {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 0 -4px 18px rgba(0,0,0,.09);
-  z-index: 20;
-  padding: 4px 2px;
 }
 
-.bottom-nav button {
-  border: none;
+.modal-content,
+.reward-modal-content {
+  width: min(100%, 430px);
+  background: #fff;
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 20px 55px rgba(0,0,0,.2);
+  animation: modalIn .18s ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    transform: translateY(10px) scale(.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-content h3,
+.reward-modal-content h3 {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.modal-content p,
+.reward-modal-content p {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.modal-actions,
+.reward-modal-actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.modal-actions button,
+.reward-modal-actions button {
+  flex: 1;
+  padding: 11px 14px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.modal-cancel {
+  background: #f0f0f0;
+  color: #555;
+}
+
+.modal-confirm {
+  background: var(--red);
+  color: #fff;
+}
+
+/* ---------- TOAST / FEEDBACK ---------- */
+.toast,
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 82px;
+  z-index: 120;
+  transform: translateX(-50%) translateY(15px);
+  max-width: calc(100% - 32px);
+  padding: 11px 15px;
+  border-radius: 12px;
+  background: #222;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(0,0,0,.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s ease;
+}
+
+.toast.show,
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- BOTTOM NAV ---------- */
+.bottom-nav,
+nav.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 12px;
+  z-index: 50;
+  transform: translateX(-50%);
+  width: min(calc(100% - 24px), 620px);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  padding: 8px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid #e9e9e9;
+  border-radius: 19px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  backdrop-filter: blur(10px);
+}
+
+.bottom-nav a,
+.bottom-nav button,
+.nav-item {
+  min-width: 0;
+  padding: 7px 4px;
+  border-radius: 13px;
   background: transparent;
-  color: #68707a;
-  font-size: 21px;
-  min-width: 52px;
-  cursor: pointer;
+  color: #777;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
 }
 
-.bottom-nav button span {
-  display: block;
-  font-size: 9px;
-  margin-top: 3px;
-}
-
-.bottom-nav button.active {
+.bottom-nav a.active,
+.bottom-nav button.active,
+.nav-item.active {
+  background: var(--red-light);
   color: var(--red);
-  font-weight: bold;
 }
 
+.bottom-nav .nav-icon,
+.nav-item .nav-icon {
+  display: block;
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 2px;
+}
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+.bottom-nav span {
+  display: block;
+  white-space: nowrap;
+}
 
-@media (max-width: 420px) {
+/* ---------- UTILITY ---------- */
+.hidden {
+  display: none !important;
+}
 
-  .quick-menu {
-    grid-template-columns: repeat(3, 1fr);
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+
+/* Prevent accidental horizontal scrolling on mobile */
+body,
+main {
+  overflow-x: hidden;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 700px) {
+  header,
+  .app-header,
+  .top-header {
+    padding: 13px 14px;
   }
 
-  .quick-menu button:last-child {
-    grid-column: span 1;
+  .header-inner,
+  .header-content,
+  .header-row {
+    gap: 10px;
   }
 
-  .balance-card {
-    padding: 18px;
+  .brand-logo,
+  .logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    font-size: 19px;
   }
 
-  .coin {
-    width: 65px;
-    height: 65px;
-    min-width: 65px;
+  .brand h1,
+  .logo-area h1,
+  .brand-title {
+    font-size: 17px;
+  }
+
+  .container,
+  .main-container,
+  .app-container {
+    width: min(100% - 20px, 680px);
+    padding-top: 14px;
+    padding-bottom: 92px;
+  }
+
+  .balance-card,
+  .points-card,
+  .balance {
+    border-radius: 20px;
+    padding: 19px;
+    margin-bottom: 14px;
+  }
+
+  .balance-value,
+  .points-value {
     font-size: 32px;
   }
 
-  .balance-info h2 {
-    font-size: 30px;
+  .quick-menu {
+    gap: 7px;
+    margin: 13px 0 20px;
   }
 
-  .mission-card {
-    padding: 11px;
+  .quick-item,
+  .quick-menu a,
+  .quick-menu button {
+    padding: 10px 4px;
+    border-radius: 13px;
   }
 
-  .mission-info p {
+  .quick-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .quick-item span,
+  .quick-menu a span,
+  .quick-menu button span {
     font-size: 9px;
   }
 
-  .reward-section .section-title h3 {
-    font-size: 23px;
+  .section-title h2,
+  .section-heading h2 {
+    font-size: 18px;
   }
 
-  .reward-section .section-title p {
+  .mission-list,
+  .missions,
+  .mission-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .mission-card,
+  .mission-item {
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .mission-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    font-size: 19px;
+  }
+
+  .mission-info h3,
+  .mission-card h3,
+  .mission-item h3 {
+    font-size: 13px;
+  }
+
+  .mission-info p,
+  .mission-card p,
+  .mission-item p {
+    font-size: 10px;
+  }
+
+  .mission-reward {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+  }
+
+  .mission-reward button,
+  .mission-btn {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  .reward-banner {
+    align-items: flex-start;
+    padding: 14px;
+    border-radius: 15px;
+  }
+
+  .reward-banner button {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  .reward-grid,
+  .rewards-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+
+  .reward-card {
+    padding: 12px;
+    border-radius: 15px;
+  }
+
+  .reward-card-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .reward-card h3 {
+    font-size: 13px;
+  }
+
+  .reward-card p {
+    min-height: 42px;
+    font-size: 10px;
+  }
+
+  .reward-cost {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reward-cost strong {
     font-size: 11px;
   }
 
-  .reward-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+  .reward-card button {
+    width: 100%;
+    padding: 8px 9px;
+    font-size: 10px;
+  }
+
+  .reward-header h2,
+  .reward-page-header h2 {
+    font-size: 19px;
+  }
+
+  .reward-points,
+  #rewardPoints {
+    font-size: 10px;
+    padding: 7px 9px;
+  }
+
+  .history-item,
+  .reward-history-item {
+    padding: 10px 11px;
+  }
+
+  .history-item strong,
+  .reward-history-item strong {
+    font-size: 11px;
+  }
+
+  .history-item small,
+  .reward-history-item small {
+    font-size: 9px;
+  }
+
+  .bottom-nav,
+  nav.bottom-nav {
+    bottom: 8px;
+    width: calc(100% - 16px);
+    border-radius: 17px;
+    padding: 6px;
+  }
+
+  .bottom-nav a,
+  .bottom-nav button,
+  .nav-item {
+    padding: 6px 2px;
+    font-size: 9px;
+  }
+
+  .bottom-nav .nav-icon,
+  .nav-item .nav-icon {
+    font-size: 17px;
+    line-height: 18px;
+  }
+}
+
+/* ---------- VERY SMALL PHONES ---------- */
+@media (max-width: 380px) {
+  .container,
+  .main-container,
+  .app-container {
+    width: calc(100% - 14px);
+  }
+
+  .quick-menu {
+    gap: 4px;
+  }
+
+  .quick-icon {
+    width: 31px;
+    height: 31px;
+  }
+
+  .mission-card,
+  .mission-item {
+    gap: 8px;
+  }
+
+  .mission-reward span {
+    font-size: 10px;
+  }
+
+  .reward-grid,
+  .rewards-grid {
+    gap: 7px;
   }
 
   .reward-card {
     padding: 10px;
   }
 
-  .reward-image {
-    height: 90px;
-    font-size: 38px;
+  .reward-card p {
+    min-height: 48px;
   }
-
-  .reward-info h4 {
-    font-size: 13px;
-  }
-
-  .reward-info p {
-    font-size: 10px;
-  }
-
-  .reward-bottom strong {
-    font-size: 11px;
-  }
-
-  .reward-bottom button {
-    padding: 7px 9px;
-    font-size: 10px;
-  }
-
 }
 
-
-/* =========================================
-   EXTRA SMALL SCREEN
-========================================= */
-
-@media (max-width: 350px) {
-
-  .reward-grid {
-    grid-template-columns: 1fr;
+/* ---------- DESKTOP ---------- */
+@media (min-width: 701px) {
+  .container,
+  .main-container,
+  .app-container {
+    padding-bottom: 40px;
   }
 
-  .reward-image {
-    height: 100px;
+  .bottom-nav,
+  nav.bottom-nav {
+    bottom: 18px;
   }
 
-  .quick-menu {
-    gap: 6px;
+  .mission-list,
+  .missions,
+  .mission-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .reward-grid,
+  .rewards-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- DARK MODE SUPPORT ----------
+   Bisa dipakai jika nanti body diberi class "dark-mode".
+   Tidak aktif secara default.
+   ---------------------------------------- */
+body.dark-mode {
+  --text: #f4f4f4;
+  --muted: #a8a8a8;
+  --border: #303030;
+  --card: #1e1e1e;
+  --bg: #121212;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body.dark-mode .quick-item,
+body.dark-mode .quick-menu a,
+body.dark-mode .quick-menu button,
+body.dark-mode .mission-card,
+body.dark-mode .mission-item,
+body.dark-mode .info-card,
+body.dark-mode .notice-card,
+body.dark-mode .reward-card,
+body.dark-mode .history-item,
+body.dark-mode .reward-history-item,
+body.dark-mode .modal-content,
+body.dark-mode .reward-modal-content,
+body.dark-mode .bottom-nav,
+body.dark-mode nav.bottom-nav {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+body.dark-mode .quick-item,
+body.dark-mode .quick-menu a,
+body.dark-mode .quick-menu button,
+body.dark-mode .bottom-nav a,
+body.dark-mode .bottom-nav button,
+body.dark-mode .nav-item {
+  color: #ddd;
+}
+
+body.dark-mode .section-title h2,
+body.dark-mode .section-heading h2,
+body.dark-mode .reward-header h2,
+body.dark-mode .reward-page-header h2,
+body.dark-mode .reward-card h3,
+body.dark-mode .mission-info h3,
+body.dark-mode .mission-card h3,
+body.dark-mode .mission-item h3,
+body.dark-mode .reward-history-header h3,
+body.dark-mode .modal-content h3,
+body.dark-mode .reward-modal-content h3 {
+  color: #fff;
+}
+
+body.dark-mode .empty-history {
+  background: var(--card);
+  border-color: #3b3b3b;
 }

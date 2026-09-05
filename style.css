@@ -1667,3 +1667,376 @@ body.dark-mode .empty-history {
     font-size: 14px;
   }
 }
+
+/* =========================================================
+   RewardKu v4 - EXTRA COMPACT MOBILE
+   Fokus: lebih banyak konten terlihat di layar HP.
+   Desktop tidak diubah.
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  /* ===== HEADER ===== */
+  header,
+  .app-header,
+  .top-header {
+    padding: 8px 11px;
+  }
+
+  .header-inner,
+  .header-content,
+  .header-row {
+    gap: 7px;
+  }
+
+  .brand-logo,
+  .logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    font-size: 17px;
+  }
+
+  .brand h1,
+  .logo-area h1,
+  .brand-title {
+    font-size: 15px;
+  }
+
+  .brand small,
+  .logo-area small {
+    font-size: 9px;
+  }
+
+  /* ===== MAIN ===== */
+  .container,
+  .main-container,
+  .app-container {
+    width: calc(100% - 14px);
+    padding-top: 8px;
+    padding-bottom: 88px;
+  }
+
+  /* ===== POINT CARD ===== */
+  .balance-card,
+  .points-card,
+  .balance {
+    min-height: 116px;
+    padding: 14px;
+    margin-bottom: 9px;
+    border-radius: 17px;
+  }
+
+  .balance-label,
+  .points-label {
+    font-size: 10px;
+  }
+
+  .balance-value,
+  .points-value {
+    font-size: 27px;
+    line-height: 1.05;
+  }
+
+  .balance-footer,
+  .points-footer {
+    margin-top: 6px;
+    font-size: 9px;
+  }
+
+  /* ===== QUICK MENU ===== */
+  .quick-menu {
+    gap: 5px;
+    margin: 8px 0 13px;
+  }
+
+  .quick-item,
+  .quick-menu a,
+  .quick-menu button {
+    padding: 7px 2px;
+    border-radius: 11px;
+  }
+
+  .quick-icon {
+    width: 29px;
+    height: 29px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+
+  .quick-item span,
+  .quick-menu a span,
+  .quick-menu button span {
+    font-size: 8px;
+  }
+
+  /* ===== SECTION TITLE ===== */
+  .section {
+    margin-top: 14px;
+  }
+
+  .section-title,
+  .section-heading {
+    margin-bottom: 6px;
+  }
+
+  .section-title h2,
+  .section-heading h2 {
+    font-size: 16px;
+  }
+
+  .section-title p,
+  .section-heading p {
+    font-size: 9px;
+  }
+
+  /* ===== MISSION ===== */
+  .mission-list,
+  .missions,
+  .mission-grid {
+    gap: 5px;
+  }
+
+  .mission-card,
+  .mission-item {
+    min-height: 61px;
+    height: 61px;
+    padding: 7px 9px;
+    border-radius: 12px;
+    gap: 8px;
+  }
+
+  .mission-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    font-size: 16px;
+  }
+
+  .mission-info h3,
+  .mission-card h3,
+  .mission-item h3 {
+    font-size: 11px;
+    line-height: 1.15;
+  }
+
+  .mission-info p,
+  .mission-card p,
+  .mission-item p {
+    font-size: 8px;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mission-reward {
+    gap: 3px;
+  }
+
+  .mission-reward span {
+    font-size: 9px;
+  }
+
+  .mission-reward button,
+  .mission-btn {
+    min-width: 45px;
+    padding: 6px 7px;
+    border-radius: 8px;
+    font-size: 8px;
+  }
+
+  /* ===== REWARD BANNER ===== */
+  .reward-banner {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .reward-banner h3 {
+    font-size: 12px;
+  }
+
+  .reward-banner p {
+    font-size: 8px;
+  }
+
+  .reward-banner button {
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 8px;
+  }
+
+  /* ===== REWARD CARDS ===== */
+  .reward-grid,
+  .rewards-grid {
+    gap: 6px;
+  }
+
+  .reward-card {
+    padding: 9px;
+    border-radius: 12px;
+  }
+
+  .reward-card-icon {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 5px;
+    border-radius: 9px;
+    font-size: 17px;
+  }
+
+  .reward-card h3 {
+    font-size: 10px;
+    line-height: 1.15;
+  }
+
+  .reward-card p {
+    min-height: 27px;
+    font-size: 7px;
+    line-height: 1.15;
+  }
+
+  .reward-cost {
+    margin-top: 6px;
+    gap: 4px;
+  }
+
+  .reward-cost strong {
+    font-size: 9px;
+  }
+
+  .reward-card button {
+    padding: 6px 7px;
+    border-radius: 7px;
+    font-size: 8px;
+  }
+
+  /* ===== HISTORY ===== */
+  .reward-history,
+  #rewardHistory {
+    margin-top: 13px;
+  }
+
+  .reward-history-header h3 {
+    font-size: 14px;
+  }
+
+  .reward-history-header button,
+  .clear-history-btn {
+    font-size: 8px;
+  }
+
+  .history-item,
+  .reward-history-item {
+    padding: 7px 9px;
+    border-radius: 10px;
+  }
+
+  .history-item strong,
+  .reward-history-item strong {
+    font-size: 9px;
+  }
+
+  .history-item small,
+  .reward-history-item small {
+    font-size: 7px;
+  }
+
+  .history-points {
+    font-size: 9px;
+  }
+
+  .empty-history {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 9px;
+  }
+
+  /* ===== INFO CARD ===== */
+  .info-card,
+  .notice-card {
+    padding: 11px;
+    margin-top: 12px;
+    border-radius: 12px;
+  }
+
+  .info-card h3,
+  .notice-card h3 {
+    font-size: 12px;
+  }
+
+  .info-card p,
+  .notice-card p {
+    font-size: 9px;
+  }
+
+  /* ===== BOTTOM NAV 6 ITEM ===== */
+  .bottom-nav,
+  nav.bottom-nav {
+    bottom: 6px;
+    width: calc(100% - 10px);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1px;
+    padding: 4px;
+    border-radius: 14px;
+  }
+
+  .bottom-nav a,
+  .bottom-nav button,
+  .nav-item {
+    padding: 4px 0;
+    border-radius: 9px;
+    font-size: 7px;
+  }
+
+  .bottom-nav .nav-icon,
+  .nav-item .nav-icon {
+    font-size: 14px;
+    line-height: 15px;
+    margin-bottom: 1px;
+  }
+}
+
+/* ===== HP SANGAT KECIL ===== */
+@media (max-width: 380px) {
+  .container,
+  .main-container,
+  .app-container {
+    width: calc(100% - 10px);
+  }
+
+  .balance-card,
+  .points-card,
+  .balance {
+    min-height: 108px;
+    padding: 12px;
+  }
+
+  .balance-value,
+  .points-value {
+    font-size: 25px;
+  }
+
+  .mission-card,
+  .mission-item {
+    height: 58px;
+    min-height: 58px;
+    padding: 6px 8px;
+  }
+
+  .mission-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .reward-card {
+    padding: 8px;
+  }
+
+  .bottom-nav,
+  nav.bottom-nav {
+    width: calc(100% - 6px);
+  }
+}

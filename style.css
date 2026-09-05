@@ -2040,3 +2040,351 @@ body.dark-mode .empty-history {
     width: calc(100% - 6px);
   }
 }
+
+
+/* =========================================================
+   RewardKu v5 - DARK MODE + PROFILE + INSTALL
+   Fitur UI tambahan, tanpa mengubah struktur HTML utama.
+   ========================================================= */
+
+/* ---------- DARK MODE ---------- */
+body.dark-mode {
+  --text: #f4f4f5;
+  --muted: #a8a8ad;
+  --border: #303036;
+  --card: #1d1d22;
+  --bg: #111216;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body.dark-mode .quick-menu button,
+body.dark-mode .mission-card,
+body.dark-mode .reward-card,
+body.dark-mode .history-box,
+body.dark-mode .history-item,
+body.dark-mode .info-card,
+body.dark-mode .profile-card,
+body.dark-mode .install-card {
+  background: #1d1d22;
+  border-color: #303036;
+}
+
+body.dark-mode .section-title h3,
+body.dark-mode .mission-info h4,
+body.dark-mode .reward-info h4,
+body.dark-mode .history-title h3,
+body.dark-mode .info-card h4 {
+  color: #f5f5f5;
+}
+
+body.dark-mode .quick-menu strong,
+body.dark-mode .quick-menu small,
+body.dark-mode .mission-info p,
+body.dark-mode .reward-info p,
+body.dark-mode .info-card p {
+  color: #c0c0c5;
+}
+
+body.dark-mode .bottom-nav {
+  background: rgba(29,29,34,.96);
+  border-color: #303036;
+}
+
+body.dark-mode .bottom-nav button {
+  color: #b8b8bd;
+}
+
+body.dark-mode .bottom-nav button.active {
+  background: rgba(215,25,32,.22);
+  color: #ff5c63;
+}
+
+/* ---------- FLOATING ACTIONS ---------- */
+.rewardku-floating-tools {
+  position: fixed;
+  top: 108px;
+  right: 10px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.rewardku-floating-tools button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.95);
+  border: 1px solid #eee;
+  box-shadow: 0 5px 16px rgba(0,0,0,.13);
+  font-size: 17px;
+}
+
+body.dark-mode .rewardku-floating-tools button {
+  background: #24242a;
+  border-color: #3a3a42;
+}
+
+/* ---------- PROFILE PANEL ---------- */
+.rewardku-profile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0,0,0,.48);
+  padding: 12px;
+}
+
+.rewardku-profile-overlay.show {
+  display: flex;
+}
+
+.rewardku-profile-panel {
+  width: min(100%, 520px);
+  max-height: 88vh;
+  overflow: auto;
+  background: #fff;
+  color: #222;
+  border-radius: 22px 22px 16px 16px;
+  padding: 18px;
+  box-shadow: 0 -10px 40px rgba(0,0,0,.2);
+}
+
+body.dark-mode .rewardku-profile-panel {
+  background: #1d1d22;
+  color: #f5f5f5;
+}
+
+.rewardku-profile-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rewardku-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
+  display: grid;
+  place-items: center;
+  background: #fff0f1;
+  font-size: 29px;
+}
+
+.rewardku-profile-top h2 {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.rewardku-profile-top p {
+  color: #777;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+body.dark-mode .rewardku-profile-top p {
+  color: #aaa;
+}
+
+.rewardku-profile-close {
+  margin-left: auto;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #f1f1f1;
+  color: #555;
+  font-size: 17px;
+}
+
+.rewardku-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.rewardku-stat {
+  text-align: center;
+  padding: 11px 6px;
+  border-radius: 13px;
+  background: #f8f8f8;
+  border: 1px solid #eee;
+}
+
+body.dark-mode .rewardku-stat {
+  background: #27272d;
+  border-color: #383840;
+}
+
+.rewardku-stat strong {
+  display: block;
+  font-size: 16px;
+}
+
+.rewardku-stat span {
+  display: block;
+  margin-top: 2px;
+  color: #777;
+  font-size: 9px;
+}
+
+body.dark-mode .rewardku-stat span {
+  color: #aaa;
+}
+
+.rewardku-profile-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.rewardku-profile-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 13px;
+  border-radius: 12px;
+  background: #f8f8f8;
+  color: #222;
+  text-align: left;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+body.dark-mode .rewardku-profile-actions button {
+  background: #27272d;
+  color: #eee;
+}
+
+.rewardku-profile-actions button span {
+  color: #888;
+  font-weight: 500;
+}
+
+.rewardku-profile-note {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 11px;
+  background: #fff8dc;
+  color: #806000;
+  font-size: 9px;
+}
+
+/* ---------- INSTALL CARD ---------- */
+.install-card {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #f1df9b;
+  border-radius: 14px;
+  background: #fffdf0;
+}
+
+.install-card.show {
+  display: flex;
+}
+
+.install-card-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 20px;
+}
+
+.install-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.install-card-text strong {
+  display: block;
+  color: #725500;
+  font-size: 11px;
+}
+
+.install-card-text small {
+  display: block;
+  color: #8c7a3f;
+  font-size: 8px;
+  margin-top: 1px;
+}
+
+.install-card button {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: #d71920;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+body.dark-mode .install-card {
+  background: #2a2618;
+  border-color: #5a4b22;
+}
+
+body.dark-mode .install-card-text strong {
+  color: #f3d56c;
+}
+
+body.dark-mode .install-card-text small {
+  color: #d2bd6e;
+}
+
+/* ---------- SMALL SCREEN ---------- */
+@media (max-width: 700px) {
+  .rewardku-floating-tools {
+    top: 105px;
+    right: 7px;
+  }
+
+  .rewardku-floating-tools button {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .rewardku-profile-overlay {
+    padding: 7px;
+  }
+
+  .rewardku-profile-panel {
+    padding: 14px;
+    border-radius: 19px 19px 13px 13px;
+  }
+
+  .rewardku-profile-top h2 {
+    font-size: 17px;
+  }
+
+  .rewardku-stats {
+    gap: 6px;
+  }
+
+  .rewardku-stat {
+    padding: 9px 4px;
+  }
+
+  .rewardku-stat strong {
+    font-size: 14px;
+  }
+
+  .rewardku-stat span {
+    font-size: 8px;
+  }
+
+  .install-card {
+    padding: 10px;
+  }
+}

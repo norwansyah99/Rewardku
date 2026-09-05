@@ -1,5 +1,5 @@
 /* =========================================================
-   RewardKu V7
+   RewardKu V8
    Misi + Poin + Reward + Dark Mode + Profil + PWA Install
    Semua data demo disimpan di localStorage perangkat.
    ========================================================= */
@@ -9,6 +9,7 @@ const MISSION_KEY = "rewardku_missions";
 const REWARD_HISTORY_KEY = "rewardku_redemptions";
 const THEME_KEY = "rewardku_theme";
 const PROFILE_KEY = "rewardku_profile";
+const USER_ID_KEY = "rewardku_user_id";
 
 const DEFAULT_POINTS = 1250;
 
@@ -380,10 +381,29 @@ function saveProfile(profile) {
   localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
 }
 
+function getUserId() {
+  let id = localStorage.getItem(USER_ID_KEY);
+  if (!id) {
+    const random = Math.random().toString(36).slice(2, 8).toUpperCase();
+    id = "RWK-" + random;
+    localStorage.setItem(USER_ID_KEY, id);
+  }
+  return id;
+}
+
 function getMissionCount() {
   const state = getMissionState();
   return Object.keys(MISSIONS).filter((id) => state[id] === todayKey()).length +
          (state.share === todayKey() ? 1 : 0);
+}
+
+function getCompletedMissionCountAll() {
+  const state = getMissionState();
+  return Object.keys(MISSIONS).filter((id) => state[id]).length + (state.share ? 1 : 0);
+}
+
+function isAppInstalled() {
+  return window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
 }
 
 function openProfile() {
@@ -397,12 +417,12 @@ function openProfile() {
     overlay.innerHTML = `
       <div class="rewardku-profile-panel">
         <div class="rewardku-profile-top">
-          <div class="rewardku-avatar">👤</div>
-          <div>
+          <div class="rewardku-avatar" id="rewardkuAvatar">👤</div>
+          <div class="rewardku-profile-heading">
             <h2 id="rewardkuProfileName">Pengguna RewardKu</h2>
-            <p>Profil & statistik akun</p>
+            <p id="rewardkuUserId">ID RWK-XXXXXX</p>
           </div>
-          <button class="rewardku-profile-close" type="button" id="rewardkuProfileClose">×</button>
+          <button class="rewardku-profile-close" type="button" id="rewardkuProfileClose" aria-label="Tutup">×</button>
         </div>
 
         <div class="rewardku-stats">
@@ -420,6 +440,11 @@ function openProfile() {
           </div>
         </div>
 
+        <div class="rewardku-profile-mini-stats">
+          <div><span>Misi tercatat</span><strong id="profileMissionAllStat">0</strong></div>
+          <div><span>Status aplikasi</span><strong id="profileInstallStat">Web</strong></div>
+        </div>
+
         <div class="rewardku-profile-actions">
           <button type="button" id="profileEditName">
             ✏️ Nama Pengguna <span>Ubah</span>
@@ -430,10 +455,15 @@ function openProfile() {
           <button type="button" id="profileRewardAction">
             🎁 Riwayat Reward <span>Lihat</span>
           </button>
+          <button type="button" id="profileInstallAction">
+            📲 Aplikasi RewardKu <span id="profileInstallText">Install</span>
+          </button>
         </div>
 
-        <div class="rewardku-profile-note">
-          💡 Data profil, poin dan riwayat pada versi ini tersimpan di perangkat/browser.
+        <div class="rewardku-profile-about">
+          <strong>🎁 Tentang RewardKu</strong>
+          <p>Aktivitas kecil, manfaat besar. Versi demo ini menyimpan data di perangkat/browser.</p>
+          <small>RewardKu V8 • PWA Ready</small>
         </div>
       </div>
     `;
@@ -449,11 +479,13 @@ function openProfile() {
     document.getElementById("profileEditName").onclick = () => {
       const current = getProfile().name || "Pengguna RewardKu";
       const name = prompt("Masukkan nama pengguna:", current);
-
       if (name === null) return;
 
       const clean = name.trim().slice(0, 30);
-      if (!clean) return;
+      if (!clean) {
+        showToast("⚠️ Nama tidak boleh kosong.");
+        return;
+      }
 
       saveProfile({ name: clean });
       renderProfile();
@@ -469,6 +501,14 @@ function openProfile() {
       closeProfile();
       showRewardPage();
     };
+
+    document.getElementById("profileInstallAction").onclick = () => {
+      if (isAppInstalled()) {
+        showToast("📲 RewardKu sudah terpasang di perangkat.");
+        return;
+      }
+      installPWA();
+    };
   }
 
   renderProfile();
@@ -478,17 +518,31 @@ function openProfile() {
 function renderProfile() {
   const profile = getProfile();
   const name = profile.name || "Pengguna RewardKu";
+  const firstLetter = name.trim().charAt(0).toUpperCase() || "👤";
 
   const nameEl = document.getElementById("rewardkuProfileName");
+  const idEl = document.getElementById("rewardkuUserId");
+  const avatarEl = document.getElementById("rewardkuAvatar");
   const pointsEl = document.getElementById("profilePointStat");
   const missionEl = document.getElementById("profileMissionStat");
   const rewardEl = document.getElementById("profileRewardStat");
+  const missionAllEl = document.getElementById("profileMissionAllStat");
   const themeText = document.getElementById("profileThemeText");
+  const installStat = document.getElementById("profileInstallStat");
+  const installText = document.getElementById("profileInstallText");
 
   if (nameEl) nameEl.textContent = name;
+  if (idEl) idEl.textContent = "ID " + getUserId();
+  if (avatarEl) avatarEl.textContent = firstLetter;
   if (pointsEl) pointsEl.textContent = formatPoints(getPoints());
   if (missionEl) missionEl.textContent = getMissionCount();
   if (rewardEl) rewardEl.textContent = getRewardHistory().length;
+  if (missionAllEl) missionAllEl.textContent = getCompletedMissionCountAll();
+
+  const installed = isAppInstalled();
+  if (installStat) installStat.textContent = installed ? "Terpasang" : "Web";
+  if (installText) installText.textContent = installed ? "Terpasang ✓" : (deferredInstallPrompt ? "Install" : "Cara Install");
+
   if (themeText) {
     themeText.textContent = document.body.classList.contains("dark-mode")
       ? "Mode terang"
@@ -576,16 +630,19 @@ function setupPWA() {
     event.preventDefault();
     deferredInstallPrompt = event;
     showInstallCard();
+    renderProfile();
   });
 
   window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
     hideInstallCard();
+    renderProfile();
     showToast("🎉 RewardKu berhasil dipasang!");
   });
 
   if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
     hideInstallCard();
+    renderProfile();
   }
 }
 

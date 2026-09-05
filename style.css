@@ -2388,3 +2388,98 @@ body.dark-mode .install-card-text small {
     padding: 10px;
   }
 }
+
+/* ---------- REWARDKU V8 PROFILE POLISH ---------- */
+.rewardku-profile-heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.rewardku-profile-top h2 {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rewardku-profile-top p {
+  margin: 3px 0 0;
+}
+
+.rewardku-avatar {
+  color: #d90416;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.rewardku-mini-stats,
+.rewardku-profile-mini-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rewardku-profile-mini-stats > div {
+  padding: 10px 11px;
+  border-radius: 12px;
+  background: #f8f8f8;
+  border: 1px solid #eee;
+}
+
+body.dark-mode .rewardku-profile-mini-stats > div {
+  background: #27272d;
+  border-color: #383840;
+}
+
+.rewardku-profile-mini-stats span,
+.rewardku-profile-mini-stats strong {
+  display: block;
+}
+
+.rewardku-profile-mini-stats span {
+  color: #888;
+  font-size: 9px;
+}
+
+.rewardku-profile-mini-stats strong {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.rewardku-profile-about {
+  margin-top: 12px;
+  padding: 11px 12px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #fff8df, #fffdf5);
+  border: 1px solid #f2df9a;
+}
+
+body.dark-mode .rewardku-profile-about {
+  background: #2a2618;
+  border-color: #5a4b22;
+}
+
+.rewardku-profile-about strong {
+  display: block;
+  font-size: 11px;
+}
+
+.rewardku-profile-about p {
+  margin: 4px 0 0;
+  color: #777;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+body.dark-mode .rewardku-profile-about p {
+  color: #bbb;
+}
+
+.rewardku-profile-about small {
+  display: block;
+  margin-top: 6px;
+  color: #9a7b20;
+  font-size: 8px;
+  font-weight: 800;
+}

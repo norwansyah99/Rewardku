@@ -1,159 +1,319 @@
-// ======================================
-// REWARDKU - SISTEM POIN & STATUS MISI
-// ======================================
+// ==========================================
+// REWARDKU
+// SISTEM POIN + STATUS MISI
+// ==========================================
+
+
+// ==========================================
+// KONFIGURASI
+// ==========================================
 
 const DEFAULT_POINTS = 1250;
 
-let points = Number(localStorage.getItem("rewardku_points"));
+const POINTS_KEY = "rewardku_points";
 
-if (isNaN(points)) {
-  points = DEFAULT_POINTS;
-  localStorage.setItem("rewardku_points", points);
-}
+const MISSIONS_KEY = "rewardku_missions";
 
 
-// ======================================
-// TAMPILKAN POIN
-// ======================================
-
-function updatePoints() {
-  const element = document.getElementById("points");
-
-  if (element) {
-    element.textContent = points.toLocaleString("id-ID");
-  }
-}
-
-
-// ======================================
-// TANGGAL HARI INI
-// ======================================
-
-function getToday() {
-  const date = new Date();
-
-  return date.getFullYear() + "-" +
-    String(date.getMonth() + 1).padStart(2, "0") + "-" +
-    String(date.getDate()).padStart(2, "0");
-}
-
-
-// ======================================
+// ==========================================
 // DATA MISI
-// ======================================
+// ==========================================
 
-function getClaimedMissions() {
-  return JSON.parse(
-    localStorage.getItem("rewardku_missions") || "{}"
+const MISSIONS = {
+
+  iklan: {
+    name: "Melihat Iklan",
+    reward: 20
+  },
+
+  novel: {
+    name: "Baca Novel",
+    reward: 30
+  },
+
+  game: {
+    name: "Mainkan Game",
+    reward: 25
+  },
+
+  shortvideo: {
+    name: "Menonton Short Video",
+    reward: 20
+  },
+
+  login: {
+    name: "Login Harian",
+    reward: 10
+  },
+
+  share: {
+    name: "Bagikan RewardKu",
+    reward: 50
+  },
+
+  survey: {
+    name: "Survei Singkat",
+    reward: 40
+  }
+
+};
+
+
+// ==========================================
+// AMBIL POIN
+// ==========================================
+
+function getPoints() {
+
+  const saved =
+    localStorage.getItem(POINTS_KEY);
+
+  if (saved === null) {
+
+    localStorage.setItem(
+      POINTS_KEY,
+      DEFAULT_POINTS
+    );
+
+    return DEFAULT_POINTS;
+  }
+
+  const number =
+    Number(saved);
+
+  if (Number.isNaN(number)) {
+
+    localStorage.setItem(
+      POINTS_KEY,
+      DEFAULT_POINTS
+    );
+
+    return DEFAULT_POINTS;
+  }
+
+  return number;
+}
+
+
+// ==========================================
+// SIMPAN POIN
+// ==========================================
+
+function savePoints(value) {
+
+  localStorage.setItem(
+    POINTS_KEY,
+    String(value)
   );
 }
 
 
-// ======================================
-// CEK MISI
-// ======================================
+// ==========================================
+// TAMPILKAN POIN
+// ==========================================
+
+function updatePoints() {
+
+  const element =
+    document.getElementById("points");
+
+  if (!element) {
+    return;
+  }
+
+  const points =
+    getPoints();
+
+  element.textContent =
+    points.toLocaleString("id-ID");
+}
+
+
+// ==========================================
+// TANGGAL HARI INI
+// ==========================================
+
+function getToday() {
+
+  const now =
+    new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+// ==========================================
+// AMBIL DATA MISI
+// ==========================================
+
+function getMissionData() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        MISSIONS_KEY
+      ) || "{}"
+    );
+
+  } catch (error) {
+
+    return {};
+
+  }
+}
+
+
+// ==========================================
+// SIMPAN DATA MISI
+// ==========================================
+
+function saveMissionData(data) {
+
+  localStorage.setItem(
+    MISSIONS_KEY,
+    JSON.stringify(data)
+  );
+}
+
+
+// ==========================================
+// CEK MISI SUDAH DIKLAIM
+// ==========================================
 
 function isMissionClaimed(mission) {
 
-  const claimed = getClaimedMissions();
+  const data =
+    getMissionData();
 
-  return claimed[mission] === getToday();
-}
-
-
-// ======================================
-// SIMPAN MISI
-// ======================================
-
-function saveMission(mission) {
-
-  const claimed = getClaimedMissions();
-
-  claimed[mission] = getToday();
-
-  localStorage.setItem(
-    "rewardku_missions",
-    JSON.stringify(claimed)
+  return (
+    data[mission] === getToday()
   );
 }
 
 
-// ======================================
-// CARI TOMBOL MISI
-// ======================================
+// ==========================================
+// TANDAI MISI SEBAGAI DIKLAIM
+// ==========================================
+
+function markMissionClaimed(mission) {
+
+  const data =
+    getMissionData();
+
+  data[mission] =
+    getToday();
+
+  saveMissionData(data);
+}
+
+
+// ==========================================
+// AMBIL TOMBOL MISI
+// ==========================================
 
 function getMissionButton(mission) {
 
-  const cards = document.querySelectorAll(
-    ".mission-card"
+  return document.getElementById(
+    "btn-" + mission
   );
-
-  const missionOrder = [
-    "iklan",
-    "novel",
-    "game",
-    "shortvideo",
-    "login"
-  ];
-
-  const index = missionOrder.indexOf(mission);
-
-  if (index !== -1 && cards[index]) {
-    return cards[index].querySelector("button");
-  }
-
-  return null;
 }
 
 
-// ======================================
+// ==========================================
 // UPDATE STATUS TOMBOL
-// ======================================
+// ==========================================
 
 function updateMissionButtons() {
 
-  const missions = [
-    "iklan",
-    "novel",
-    "game",
-    "shortvideo",
-    "login"
-  ];
+  Object.keys(MISSIONS)
+    .forEach(function(mission) {
 
-  missions.forEach(function(mission) {
+      const button =
+        getMissionButton(mission);
 
-    const button = getMissionButton(mission);
+      if (!button) {
+        return;
+      }
 
-    if (!button) return;
 
-    if (isMissionClaimed(mission)) {
+      if (
+        isMissionClaimed(mission)
+      ) {
 
-      button.textContent = "Sudah ✓";
-      button.disabled = true;
-      button.style.background = "#20a05a";
-      button.style.boxShadow = "none";
+        button.textContent =
+          "Sudah ✓";
 
-    } else {
+        button.disabled =
+          true;
 
-      button.textContent =
-        mission === "login" ? "Klaim" : "Mulai";
+        button.classList.add(
+          "claimed"
+        );
 
-      button.disabled = false;
-      button.style.background = "";
-      button.style.boxShadow = "";
-    }
-  });
+      } else {
+
+        if (mission === "login") {
+
+          button.textContent =
+            "Klaim";
+
+        } else {
+
+          button.textContent =
+            "Mulai";
+        }
+
+        button.disabled =
+          false;
+
+        button.classList.remove(
+          "claimed"
+        );
+      }
+
+    });
 }
 
 
-// ======================================
+// ==========================================
 // KLAIM MISI
-// ======================================
+// ==========================================
 
-function claimMission(mission, reward) {
+function claimMission(
+  mission,
+  reward
+) {
+
+  // Pastikan misi valid
+  if (!MISSIONS[mission]) {
+
+    console.error(
+      "Misi tidak ditemukan:",
+      mission
+    );
+
+    return;
+  }
+
 
   // Cegah klaim ulang
-  if (isMissionClaimed(mission)) {
+  if (
+    isMissionClaimed(mission)
+  ) {
 
     alert(
       "⚠️ Misi ini sudah kamu klaim hari ini."
@@ -165,75 +325,190 @@ function claimMission(mission, reward) {
   }
 
 
-  // Tambahkan poin
-  points += reward;
-
-  localStorage.setItem(
-    "rewardku_points",
-    points
-  );
+  // Ambil poin sekarang
+  let points =
+    getPoints();
 
 
-  // Simpan status
-  saveMission(mission);
+  // Tambahkan reward
+  points += Number(reward);
+
+
+  // Simpan
+  savePoints(points);
+
+  markMissionClaimed(mission);
 
 
   // Update tampilan
   updatePoints();
+
   updateMissionButtons();
 
 
+  // Beri informasi
   alert(
     "🎉 Selamat!\n\n" +
-    "+" + reward +
-    " ⭐ berhasil ditambahkan!"
+    "+" +
+    Number(reward) +
+    " ⭐ berhasil ditambahkan."
   );
 }
 
 
-// ======================================
-// TOMBOL UMUM
-// ======================================
+// ==========================================
+// PESAN FITUR
+// ==========================================
 
 function showMessage(message) {
 
   alert(
-    "🚀 " + message +
-    "\n\nFitur ini sedang kita siapkan."
+    "🚀 " +
+    message +
+    "\n\n" +
+    "Fitur ini sedang kita siapkan."
   );
 }
 
 
-// ======================================
+// ==========================================
 // BAGIKAN APLIKASI
-// ======================================
+// ==========================================
 
-function shareApp() {
+async function shareApp() {
 
   const shareData = {
+
     title: "RewardKu",
-    text: "Yuk coba RewardKu dan kumpulkan poin!",
-    url: window.location.href
+
+    text:
+      "Yuk coba RewardKu dan kumpulkan poin!",
+
+    url:
+      window.location.href
+
   };
 
 
-  if (navigator.share) {
-
-    navigator.share(shareData)
-      .catch(function() {});
-
-  } else {
+  // Jika sudah diklaim
+  if (
+    isMissionClaimed("share")
+  ) {
 
     alert(
-      "📤 Salin link RewardKu dan bagikan ke temanmu!"
+      "⚠️ Misi Bagikan RewardKu sudah kamu klaim hari ini."
+    );
+
+    updateMissionButtons();
+
+    return;
+  }
+
+
+  // Web Share API tersedia
+  if (
+    navigator.share
+  ) {
+
+    try {
+
+      await navigator.share(
+        shareData
+      );
+
+      // Beri reward setelah share berhasil
+      let points =
+        getPoints();
+
+      points += 50;
+
+      savePoints(points);
+
+      markMissionClaimed("share");
+
+      updatePoints();
+
+      updateMissionButtons();
+
+      alert(
+        "🎉 Berhasil!\n\n" +
+        "+50 ⭐ ditambahkan."
+      );
+
+    } catch (error) {
+
+      // User membatalkan share
+      console.log(
+        "Share dibatalkan."
+      );
+    }
+
+    return;
+  }
+
+
+  // Browser tidak mendukung Share API
+  try {
+
+    await navigator.clipboard.writeText(
+      window.location.href
+    );
+
+    alert(
+      "🔗 Link RewardKu sudah disalin.\n\n" +
+      "Silakan bagikan kepada teman."
+    );
+
+  } catch (error) {
+
+    alert(
+      "📤 Silakan salin link RewardKu secara manual."
     );
   }
 }
 
 
-// ======================================
+// ==========================================
+// SCROLL KE MISI
+// ==========================================
+
+function scrollToMission() {
+
+  const section =
+    document.getElementById(
+      "missionSection"
+    );
+
+  if (!section) {
+    return;
+  }
+
+  section.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+
+// ==========================================
+// SCROLL KE ATAS
+// ==========================================
+
+function scrollToTop() {
+
+  window.scrollTo({
+
+    top: 0,
+
+    behavior: "smooth"
+
+  });
+}
+
+
+// ==========================================
 // SAAT HALAMAN DIBUKA
-// ======================================
+// ==========================================
 
 document.addEventListener(
   "DOMContentLoaded",

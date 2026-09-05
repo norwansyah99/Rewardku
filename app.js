@@ -1,7 +1,7 @@
 /* =========================================================
-   RewardKu V9
+   RewardKu V11
    Misi + Poin + Reward + Dark Mode + Profil + PWA Install
-   Semua data demo disimpan di localStorage perangkat.
+   Supabase Auth + Cloud Data + fallback local.
    ========================================================= */
 
 const POINTS_KEY = "rewardku_points";
@@ -1253,13 +1253,8 @@ document.addEventListener("DOMContentLoaded", refreshV10Stats);
 
 window.__rewardkuLocalClaimMission = window.claimMission;
 
-const REWARDKU_SUPABASE_URL = 
-   "https://egrmjzpdldhobnkpxavf.supabase.co"
-const REWARDKU_SUPABASE_PUBLISHABLE_KEY = 
-   "sb_publishable_TSSBozeizM0rERZCriiipg_IjnwUVRQ"
-
-
-
+const REWARDKU_SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+const REWARDKU_SUPABASE_PUBLISHABLE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
 
 let rewardkuSupabase = null;
 let rewardkuAuthReady = false;

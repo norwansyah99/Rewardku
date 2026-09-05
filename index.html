@@ -2,30 +2,69 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>RewardKu</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#d90416"
+  >
+
+  <title>RewardKu - Kumpulkan Poin</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- Versi untuk menghindari cache -->
+  <script src="app.js?v=3" defer></script>
 </head>
 
 <body>
 
-  <!-- HEADER -->
+  <!-- =====================================
+       HEADER
+  ====================================== -->
+
   <header class="header">
 
     <div class="brand">
-      <div class="logo">🎁</div>
 
-      <div>
-        <h1>Reward<span>Ku</span></h1>
-        <p>Aktivitas kecil, manfaat besar</p>
+      <div class="logo">
+        🎁
       </div>
+
+      <div class="brand-text">
+        <h1>
+          Reward<span>Ku</span>
+        </h1>
+
+        <p>
+          Aktivitas kecil, manfaat besar
+        </p>
+      </div>
+
     </div>
 
-    <div class="header-user">
-      <span>🔔</span>
-      <span>👤</span>
+    <div class="header-actions">
+
+      <button
+        type="button"
+        onclick="showMessage('Notifikasi')"
+        aria-label="Notifikasi"
+      >
+        🔔
+      </button>
+
+      <button
+        type="button"
+        onclick="showMessage('Profil')"
+        aria-label="Profil"
+      >
+        👤
+      </button>
+
     </div>
 
   </header>
@@ -33,268 +72,649 @@
 
   <main class="container">
 
-    <!-- SALDO -->
+
+    <!-- =====================================
+         SALDO POIN
+    ====================================== -->
+
     <section class="balance-card">
 
-      <div class="coin">⭐</div>
+      <div class="coin">
+        ⭐
+      </div>
 
       <div class="balance-info">
+
         <p>Total Poin</p>
 
         <h2>
           <span id="points">1.250</span>
-          ⭐
+          <span class="star">⭐</span>
         </h2>
 
-        <small>Kumpulkan poin dan raih reward!</small>
+        <small>
+          Kumpulkan poin dan raih reward!
+        </small>
+
       </div>
 
     </section>
 
 
-    <!-- MENU CEPAT -->
+    <!-- =====================================
+         MENU CEPAT
+    ====================================== -->
+
     <section class="quick-menu">
 
-      <button onclick="showMessage('Misi')">
-        <div class="quick-icon">🎯</div>
-        <strong>Misi</strong>
-        <small>Dapatkan poin</small>
+
+      <button
+        type="button"
+        onclick="scrollToMission()"
+      >
+
+        <div class="quick-icon">
+          🎯
+        </div>
+
+        <strong>
+          Misi
+        </strong>
+
+        <small>
+          Dapatkan poin
+        </small>
+
       </button>
 
-      <button onclick="showMessage('Reward')">
-        <div class="quick-icon">🎁</div>
-        <strong>Reward</strong>
-        <small>Tukar poin</small>
+
+      <button
+        type="button"
+        onclick="showMessage('Reward')"
+      >
+
+        <div class="quick-icon">
+          🎁
+        </div>
+
+        <strong>
+          Reward
+        </strong>
+
+        <small>
+          Tukar poin
+        </small>
+
       </button>
 
-      <button onclick="showMessage('Novel')">
-        <div class="quick-icon">📖</div>
-        <strong>Novel</strong>
-        <small>Baca & dapat poin</small>
+
+      <button
+        type="button"
+        onclick="showMessage('Novel')"
+      >
+
+        <div class="quick-icon">
+          📖
+        </div>
+
+        <strong>
+          Novel
+        </strong>
+
+        <small>
+          Baca & dapat poin
+        </small>
+
       </button>
 
-      <button onclick="showMessage('Game')">
-        <div class="quick-icon">🎮</div>
-        <strong>Game</strong>
-        <small>Main & dapat poin</small>
+
+      <button
+        type="button"
+        onclick="showMessage('Game')"
+      >
+
+        <div class="quick-icon">
+          🎮
+        </div>
+
+        <strong>
+          Game
+        </strong>
+
+        <small>
+          Main & dapat poin
+        </small>
+
       </button>
 
-      <button onclick="showMessage('Profil')">
-        <div class="quick-icon">👤</div>
-        <strong>Profil</strong>
-        <small>Akun saya</small>
+
+      <button
+        type="button"
+        onclick="showMessage('Profil')"
+      >
+
+        <div class="quick-icon">
+          👤
+        </div>
+
+        <strong>
+          Profil
+        </strong>
+
+        <small>
+          Akun saya
+        </small>
+
       </button>
+
 
     </section>
 
 
-    <!-- MISI -->
-    <section class="mission-section">
+    <!-- =====================================
+         MISI HARIAN
+    ====================================== -->
+
+    <section
+      class="mission-section"
+      id="missionSection"
+    >
 
       <div class="section-title">
 
-        <h3>🎯 Misi Harian</h3>
+        <div>
+          <h3>
+            🎯 Misi Harian
+          </h3>
 
-        <span>Lihat Semua ›</span>
+          <p>
+            Selesaikan aktivitas untuk mendapatkan poin
+          </p>
+        </div>
+
+        <span>
+          Hari ini
+        </span>
 
       </div>
 
 
-      <!-- IKLAN -->
-      <div class="mission-card">
+      <!-- =================================
+           MELIHAT IKLAN
+      ================================== -->
 
-        <div class="mission-icon">📺</div>
+      <div
+        class="mission-card"
+        data-mission="iklan"
+      >
+
+        <div class="mission-icon">
+          📺
+        </div>
 
         <div class="mission-info">
-          <h4>Melihat Iklan</h4>
-          <p>Tonton iklan dan dapatkan poin.</p>
+
+          <h4>
+            Melihat Iklan
+          </h4>
+
+          <p>
+            Tonton iklan dan dapatkan poin.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+20 ⭐</strong>
-          <button onclick="claimMission('iklan', 20)">
+
+          <strong>
+            +20 ⭐
+          </strong>
+
+          <button
+            id="btn-iklan"
+            type="button"
+            onclick="claimMission('iklan', 20)"
+          >
             Mulai
           </button>
+
         </div>
 
       </div>
 
 
-      <!-- NOVEL -->
-      <div class="mission-card">
+      <!-- =================================
+           BACA NOVEL
+      ================================== -->
 
-        <div class="mission-icon">📖</div>
+      <div
+        class="mission-card"
+        data-mission="novel"
+      >
+
+        <div class="mission-icon">
+          📖
+        </div>
 
         <div class="mission-info">
-          <h4>Baca Novel</h4>
-          <p>Baca novel favorit minimal beberapa menit.</p>
+
+          <h4>
+            Baca Novel
+          </h4>
+
+          <p>
+            Baca novel favorit dan dapatkan poin.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+30 ⭐</strong>
-          <button onclick="claimMission('novel', 30)">
+
+          <strong>
+            +30 ⭐
+          </strong>
+
+          <button
+            id="btn-novel"
+            type="button"
+            onclick="claimMission('novel', 30)"
+          >
             Mulai
           </button>
+
         </div>
 
       </div>
 
 
-      <!-- GAME -->
-      <div class="mission-card">
+      <!-- =================================
+           MAIN GAME
+      ================================== -->
 
-        <div class="mission-icon">🎮</div>
+      <div
+        class="mission-card"
+        data-mission="game"
+      >
+
+        <div class="mission-icon">
+          🎮
+        </div>
 
         <div class="mission-info">
-          <h4>Mainkan Game</h4>
-          <p>Mainkan game pilihan dan raih poin.</p>
+
+          <h4>
+            Mainkan Game
+          </h4>
+
+          <p>
+            Mainkan game pilihan dan raih poin.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+25 ⭐</strong>
-          <button onclick="claimMission('game', 25)">
+
+          <strong>
+            +25 ⭐
+          </strong>
+
+          <button
+            id="btn-game"
+            type="button"
+            onclick="claimMission('game', 25)"
+          >
             Mulai
           </button>
+
         </div>
 
       </div>
 
 
-      <!-- SHORT VIDEO -->
-      <div class="mission-card">
+      <!-- =================================
+           SHORT VIDEO
+      ================================== -->
 
-        <div class="mission-icon">📱</div>
+      <div
+        class="mission-card"
+        data-mission="shortvideo"
+      >
+
+        <div class="mission-icon">
+          📱
+        </div>
 
         <div class="mission-info">
-          <h4>Menonton Short Video</h4>
-          <p>Tonton video pendek dan dapatkan poin.</p>
+
+          <h4>
+            Menonton Short Video
+          </h4>
+
+          <p>
+            Tonton video pendek dan dapatkan poin.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+20 ⭐</strong>
-          <button onclick="claimMission('shortvideo', 20)">
+
+          <strong>
+            +20 ⭐
+          </strong>
+
+          <button
+            id="btn-shortvideo"
+            type="button"
+            onclick="claimMission('shortvideo', 20)"
+          >
             Mulai
           </button>
+
         </div>
 
       </div>
 
 
-      <!-- LOGIN -->
-      <div class="mission-card">
+      <!-- =================================
+           LOGIN HARIAN
+      ================================== -->
 
-        <div class="mission-icon">📅</div>
+      <div
+        class="mission-card"
+        data-mission="login"
+      >
+
+        <div class="mission-icon">
+          📅
+        </div>
 
         <div class="mission-info">
-          <h4>Login Harian</h4>
-          <p>Login setiap hari untuk bonus poin.</p>
+
+          <h4>
+            Login Harian
+          </h4>
+
+          <p>
+            Login setiap hari untuk bonus poin.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+10 ⭐</strong>
-          <button onclick="claimMission('login', 10)">
+
+          <strong>
+            +10 ⭐
+          </strong>
+
+          <button
+            id="btn-login"
+            type="button"
+            onclick="claimMission('login', 10)"
+          >
             Klaim
           </button>
+
         </div>
 
       </div>
 
 
-      <!-- SHARE -->
-      <div class="mission-card">
+      <!-- =================================
+           BAGIKAN
+      ================================== -->
 
-        <div class="mission-icon">📤</div>
+      <div
+        class="mission-card"
+        data-mission="share"
+      >
+
+        <div class="mission-icon">
+          📤
+        </div>
 
         <div class="mission-info">
-          <h4>Bagikan Aplikasi</h4>
-          <p>Ajak teman menggunakan RewardKu.</p>
+
+          <h4>
+            Bagikan RewardKu
+          </h4>
+
+          <p>
+            Bagikan aplikasi kepada teman.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+50 ⭐</strong>
-          <button onclick="shareApp()">
+
+          <strong>
+            +50 ⭐
+          </strong>
+
+          <button
+            id="btn-share"
+            type="button"
+            onclick="shareApp()"
+          >
             Bagikan
           </button>
+
         </div>
 
       </div>
 
 
-      <!-- SURVEY -->
-      <div class="mission-card">
+      <!-- =================================
+           SURVEI
+      ================================== -->
 
-        <div class="mission-icon">📋</div>
+      <div
+        class="mission-card"
+        data-mission="survey"
+      >
+
+        <div class="mission-icon">
+          📋
+        </div>
 
         <div class="mission-info">
-          <h4>Survei Singkat</h4>
-          <p>Isi survei sederhana dan dapatkan poin.</p>
+
+          <h4>
+            Survei Singkat
+          </h4>
+
+          <p>
+            Isi survei sederhana dan dapatkan poin.
+          </p>
+
         </div>
 
         <div class="mission-reward">
-          <strong>+40 ⭐</strong>
-          <button onclick="showMessage('Survei')">
+
+          <strong>
+            +40 ⭐
+          </strong>
+
+          <button
+            id="btn-survey"
+            type="button"
+            onclick="claimMission('survey', 40)"
+          >
             Mulai
           </button>
+
         </div>
 
       </div>
 
+
     </section>
 
 
-    <!-- BANNER REWARD -->
+    <!-- =====================================
+         BANNER REWARD
+    ====================================== -->
+
     <section class="reward-banner">
 
-      <div>
-        <span>🎁</span>
-        <h3>TUKARKAN POIN</h3>
-        <p>Dengan reward menarik</p>
+      <div class="banner-icon">
+        🎁
       </div>
 
-      <strong>→</strong>
+      <div class="banner-text">
+
+        <h3>
+          Kumpulkan Lebih Banyak
+        </h3>
+
+        <p>
+          Tukarkan poinmu dengan reward menarik.
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="showMessage('Reward')"
+      >
+        →
+      </button>
 
     </section>
+
+
+    <!-- =====================================
+         INFORMASI
+    ====================================== -->
+
+    <section class="info-card">
+
+      <div class="info-icon">
+        💡
+      </div>
+
+      <div>
+
+        <h4>
+          Tips RewardKu
+        </h4>
+
+        <p>
+          Selesaikan misi harian secara rutin
+          untuk mengumpulkan lebih banyak poin.
+        </p>
+
+      </div>
+
+    </section>
+
 
   </main>
 
 
-  <!-- BOTTOM NAV -->
+  <!-- =====================================
+       BOTTOM NAVIGATION
+  ====================================== -->
+
   <nav class="bottom-nav">
 
-    <button class="active">
-      🏠
-      <span>Home</span>
+    <button
+      type="button"
+      class="active"
+      onclick="scrollToTop()"
+    >
+
+      <span class="nav-icon">
+        🏠
+      </span>
+
+      <span>
+        Home
+      </span>
+
     </button>
 
-    <button>
-      🎯
-      <span>Misi</span>
+
+    <button
+      type="button"
+      onclick="scrollToMission()"
+    >
+
+      <span class="nav-icon">
+        🎯
+      </span>
+
+      <span>
+        Misi
+      </span>
+
     </button>
 
-    <button>
-      🎁
-      <span>Reward</span>
+
+    <button
+      type="button"
+      onclick="showMessage('Reward')"
+    >
+
+      <span class="nav-icon">
+        🎁
+      </span>
+
+      <span>
+        Reward
+      </span>
+
     </button>
 
-    <button>
-      📖
-      <span>Novel</span>
+
+    <button
+      type="button"
+      onclick="showMessage('Novel')"
+    >
+
+      <span class="nav-icon">
+        📖
+      </span>
+
+      <span>
+        Novel
+      </span>
+
     </button>
 
-    <button>
-      🎮
-      <span>Game</span>
+
+    <button
+      type="button"
+      onclick="showMessage('Game')"
+    >
+
+      <span class="nav-icon">
+        🎮
+      </span>
+
+      <span>
+        Game
+      </span>
+
     </button>
 
-    <button>
-      👤
-      <span>Akun</span>
+
+    <button
+      type="button"
+      onclick="showMessage('Profil')"
+    >
+
+      <span class="nav-icon">
+        👤
+      </span>
+
+      <span>
+        Akun
+      </span>
+
     </button>
 
   </nav>
 
-
-  <script src="app.js?v=2"></script>
 
 </body>
 </html>

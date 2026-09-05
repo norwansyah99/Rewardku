@@ -1809,7 +1809,7 @@ function installV11Hooks() {
   ensureCloudUI();
 
   const profileButtons =
-    [...document.querySelectorAll('[onclick*="showMessage(\'Profil\')"], [onclick*="showMessage("Profil")"]')];
+  [...document.querySelectorAll('[onclick*="showMessage"][onclick*="Profil"]')];
 
   profileButtons.forEach((button) => {
     button.onclick = openCloudProfile;

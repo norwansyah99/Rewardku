@@ -11,78 +11,288 @@
 
 <body>
 
+  <!-- HEADER -->
   <header class="header">
-    <div>
-      <h1>🎁 RewardKu</h1>
-      <p>Kumpulkan poin dan dapatkan reward.</p>
+
+    <div class="brand">
+      <div class="logo">🎁</div>
+
+      <div>
+        <h1>Reward<span>Ku</span></h1>
+        <p>Aktivitas kecil, manfaat besar</p>
+      </div>
     </div>
+
+    <div class="header-user">
+      <span>🔔</span>
+      <span>👤</span>
+    </div>
+
   </header>
+
 
   <main class="container">
 
+    <!-- SALDO -->
     <section class="balance-card">
-      <p>Total Poin</p>
-      <h2 id="points">1.250 ⭐</h2>
-      <span>Poin kamu saat ini</span>
+
+      <div class="coin">⭐</div>
+
+      <div class="balance-info">
+        <p>Total Poin</p>
+
+        <h2>
+          <span id="points">1.250</span>
+          ⭐
+        </h2>
+
+        <small>Kumpulkan poin dan raih reward!</small>
+      </div>
+
     </section>
 
-    <section class="menu-grid">
 
-      <button onclick="showMessage('Halaman Misi')">
-        🎯
+    <!-- MENU CEPAT -->
+    <section class="quick-menu">
+
+      <button onclick="showMessage('Misi')">
+        <div class="quick-icon">🎯</div>
         <strong>Misi</strong>
         <small>Dapatkan poin</small>
       </button>
 
-      <button onclick="showMessage('Halaman Reward')">
-        🎁
+      <button onclick="showMessage('Reward')">
+        <div class="quick-icon">🎁</div>
         <strong>Reward</strong>
         <small>Tukar poin</small>
       </button>
 
-      <button onclick="showMessage('Halaman Bonus')">
-        🎉
-        <strong>Bonus</strong>
-        <small>Bonus harian</small>
+      <button onclick="showMessage('Novel')">
+        <div class="quick-icon">📖</div>
+        <strong>Novel</strong>
+        <small>Baca & dapat poin</small>
       </button>
 
-      <button onclick="showMessage('Halaman Profil')">
-        👤
+      <button onclick="showMessage('Game')">
+        <div class="quick-icon">🎮</div>
+        <strong>Game</strong>
+        <small>Main & dapat poin</small>
+      </button>
+
+      <button onclick="showMessage('Profil')">
+        <div class="quick-icon">👤</div>
         <strong>Profil</strong>
         <small>Akun saya</small>
       </button>
 
     </section>
 
-    <section class="activity">
 
-      <h3>📋 Aktivitas Terbaru</h3>
+    <!-- MISI -->
+    <section class="mission-section">
 
-      <div class="activity-item">
-        <span>🎁 Login harian</span>
-        <strong>+10 ⭐</strong>
+      <div class="section-title">
+
+        <h3>🎯 Misi Harian</h3>
+
+        <span>Lihat Semua ›</span>
+
       </div>
 
-      <div class="activity-item">
-        <span>🎯 Menyelesaikan misi</span>
-        <strong>+50 ⭐</strong>
+
+      <!-- IKLAN -->
+      <div class="mission-card">
+
+        <div class="mission-icon">📺</div>
+
+        <div class="mission-info">
+          <h4>Melihat Iklan</h4>
+          <p>Tonton iklan dan dapatkan poin.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+20 ⭐</strong>
+          <button onclick="claimMission('iklan', 20)">
+            Mulai
+          </button>
+        </div>
+
       </div>
 
-      <div class="activity-item">
-        <span>🎉 Bonus pengguna baru</span>
-        <strong>+100 ⭐</strong>
+
+      <!-- NOVEL -->
+      <div class="mission-card">
+
+        <div class="mission-icon">📖</div>
+
+        <div class="mission-info">
+          <h4>Baca Novel</h4>
+          <p>Baca novel favorit minimal beberapa menit.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+30 ⭐</strong>
+          <button onclick="claimMission('novel', 30)">
+            Mulai
+          </button>
+        </div>
+
       </div>
+
+
+      <!-- GAME -->
+      <div class="mission-card">
+
+        <div class="mission-icon">🎮</div>
+
+        <div class="mission-info">
+          <h4>Mainkan Game</h4>
+          <p>Mainkan game pilihan dan raih poin.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+25 ⭐</strong>
+          <button onclick="claimMission('game', 25)">
+            Mulai
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- SHORT VIDEO -->
+      <div class="mission-card">
+
+        <div class="mission-icon">📱</div>
+
+        <div class="mission-info">
+          <h4>Menonton Short Video</h4>
+          <p>Tonton video pendek dan dapatkan poin.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+20 ⭐</strong>
+          <button onclick="claimMission('shortvideo', 20)">
+            Mulai
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- LOGIN -->
+      <div class="mission-card">
+
+        <div class="mission-icon">📅</div>
+
+        <div class="mission-info">
+          <h4>Login Harian</h4>
+          <p>Login setiap hari untuk bonus poin.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+10 ⭐</strong>
+          <button onclick="claimMission('login', 10)">
+            Klaim
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- SHARE -->
+      <div class="mission-card">
+
+        <div class="mission-icon">📤</div>
+
+        <div class="mission-info">
+          <h4>Bagikan Aplikasi</h4>
+          <p>Ajak teman menggunakan RewardKu.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+50 ⭐</strong>
+          <button onclick="shareApp()">
+            Bagikan
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- SURVEY -->
+      <div class="mission-card">
+
+        <div class="mission-icon">📋</div>
+
+        <div class="mission-info">
+          <h4>Survei Singkat</h4>
+          <p>Isi survei sederhana dan dapatkan poin.</p>
+        </div>
+
+        <div class="mission-reward">
+          <strong>+40 ⭐</strong>
+          <button onclick="showMessage('Survei')">
+            Mulai
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BANNER REWARD -->
+    <section class="reward-banner">
+
+      <div>
+        <span>🎁</span>
+        <h3>TUKARKAN POIN</h3>
+        <p>Dengan reward menarik</p>
+      </div>
+
+      <strong>→</strong>
 
     </section>
 
   </main>
 
+
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
-    <button>🏠<span>Home</span></button>
-    <button>🎯<span>Misi</span></button>
-    <button>🎁<span>Reward</span></button>
-    <button>👤<span>Akun</span></button>
+
+    <button class="active">
+      🏠
+      <span>Home</span>
+    </button>
+
+    <button>
+      🎯
+      <span>Misi</span>
+    </button>
+
+    <button>
+      🎁
+      <span>Reward</span>
+    </button>
+
+    <button>
+      📖
+      <span>Novel</span>
+    </button>
+
+    <button>
+      🎮
+      <span>Game</span>
+    </button>
+
+    <button>
+      👤
+      <span>Akun</span>
+    </button>
+
   </nav>
+
 
   <script src="app.js"></script>
 

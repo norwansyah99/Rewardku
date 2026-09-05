@@ -824,7 +824,7 @@ function createFloatingTools() {
   document.body.appendChild(tools);
 
   document.getElementById("rewardkuThemeButton").onclick = toggleTheme;
-  document.getElementById("rewardkuProfileButton").onclick = openProfile;
+  document.getElementById("rewardkuProfileButton").onclick = openCloudProfile;
 }
 
 /* ---------- HELPERS ---------- */

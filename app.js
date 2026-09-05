@@ -1253,8 +1253,8 @@ document.addEventListener("DOMContentLoaded", refreshV10Stats);
 
 window.__rewardkuLocalClaimMission = window.claimMission;
 
-const REWARDKU_SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const REWARDKU_SUPABASE_PUBLISHABLE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const REWARDKU_SUPABASE_URL = "https://egrmjzpdldhobnkpxavf.supabase.co";
+const REWARDKU_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_TSSBozeizM0rERZCriiipg_IjnwUVRQ";
 
 let rewardkuSupabase = null;
 let rewardkuAuthReady = false;

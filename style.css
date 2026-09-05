@@ -405,3 +405,21 @@ body {
     font-size: 9px;
   }
 }
+
+/* ==========================================
+   REWARDKU - STATUS MISI
+========================================== */
+
+.mission-reward button.claimed {
+  background: #20a05a !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  cursor: default !important;
+  opacity: 1 !important;
+}
+
+.mission-reward button.claimed:disabled {
+  background: #20a05a !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}

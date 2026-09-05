@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RewardKu</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div>
+      <h1>🎁 RewardKu</h1>
+      <p>Kumpulkan poin dan dapatkan reward.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="balance-card">
+      <p>Total Poin</p>
+      <h2 id="points">1.250 ⭐</h2>
+      <span>Poin kamu saat ini</span>
+    </section>
+
+    <section class="menu-grid">
+
+      <button onclick="showMessage('Halaman Misi')">
+        🎯
+        <strong>Misi</strong>
+        <small>Dapatkan poin</small>
+      </button>
+
+      <button onclick="showMessage('Halaman Reward')">
+        🎁
+        <strong>Reward</strong>
+        <small>Tukar poin</small>
+      </button>
+
+      <button onclick="showMessage('Halaman Bonus')">
+        🎉
+        <strong>Bonus</strong>
+        <small>Bonus harian</small>
+      </button>
+
+      <button onclick="showMessage('Halaman Profil')">
+        👤
+        <strong>Profil</strong>
+        <small>Akun saya</small>
+      </button>
+
+    </section>
+
+    <section class="activity">
+
+      <h3>📋 Aktivitas Terbaru</h3>
+
+      <div class="activity-item">
+        <span>🎁 Login harian</span>
+        <strong>+10 ⭐</strong>
+      </div>
+
+      <div class="activity-item">
+        <span>🎯 Menyelesaikan misi</span>
+        <strong>+50 ⭐</strong>
+      </div>
+
+      <div class="activity-item">
+        <span>🎉 Bonus pengguna baru</span>
+        <strong>+100 ⭐</strong>
+      </div>
+
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button>🏠<span>Home</span></button>
+    <button>🎯<span>Misi</span></button>
+    <button>🎁<span>Reward</span></button>
+    <button>👤<span>Akun</span></button>
+  </nav>
+
+  <script src="app.js"></script>
+
+</body>
+</html>

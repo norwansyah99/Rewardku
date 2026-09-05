@@ -17,8 +17,8 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Versi untuk menghindari cache -->
-  <script src="app.js?v=4" defer></script>
+  <!-- Versi cache terbaru -->
+  <script src="app.js?v=5" defer></script>
 </head>
 
 <body>
@@ -36,6 +36,7 @@
       </div>
 
       <div class="brand-text">
+
         <h1>
           Reward<span>Ku</span>
         </h1>
@@ -43,9 +44,11 @@
         <p>
           Aktivitas kecil, manfaat besar
         </p>
+
       </div>
 
     </div>
+
 
     <div class="header-actions">
 
@@ -70,6 +73,7 @@
   </header>
 
 
+
   <main class="container">
 
 
@@ -85,11 +89,20 @@
 
       <div class="balance-info">
 
-        <p>Total Poin</p>
+        <p>
+          Total Poin
+        </p>
 
         <h2>
-          <span id="points">1.250</span>
-          <span class="star">⭐</span>
+
+          <span id="points">
+            1.250
+          </span>
+
+          <span class="star">
+            ⭐
+          </span>
+
         </h2>
 
         <small>
@@ -101,12 +114,15 @@
     </section>
 
 
+
     <!-- =====================================
          MENU CEPAT
     ====================================== -->
 
     <section class="quick-menu">
 
+
+      <!-- MISI -->
 
       <button
         type="button"
@@ -128,9 +144,12 @@
       </button>
 
 
+
+      <!-- REWARD -->
+
       <button
         type="button"
-        onclick="showMessage('Reward')"
+        onclick="showRewardPage()"
       >
 
         <div class="quick-icon">
@@ -147,6 +166,9 @@
 
       </button>
 
+
+
+      <!-- NOVEL -->
 
       <button
         type="button"
@@ -168,6 +190,9 @@
       </button>
 
 
+
+      <!-- GAME -->
+
       <button
         type="button"
         onclick="showMessage('Game')"
@@ -187,6 +212,9 @@
 
       </button>
 
+
+
+      <!-- PROFIL -->
 
       <button
         type="button"
@@ -211,6 +239,7 @@
     </section>
 
 
+
     <!-- =====================================
          MISI HARIAN
     ====================================== -->
@@ -223,6 +252,7 @@
       <div class="section-title">
 
         <div>
+
           <h3>
             🎯 Misi Harian
           </h3>
@@ -230,6 +260,7 @@
           <p>
             Selesaikan aktivitas untuk mendapatkan poin
           </p>
+
         </div>
 
         <span>
@@ -237,6 +268,7 @@
         </span>
 
       </div>
+
 
 
       <!-- =================================
@@ -283,6 +315,7 @@
       </div>
 
 
+
       <!-- =================================
            BACA NOVEL
       ================================== -->
@@ -325,6 +358,7 @@
         </div>
 
       </div>
+
 
 
       <!-- =================================
@@ -371,6 +405,7 @@
       </div>
 
 
+
       <!-- =================================
            SHORT VIDEO
       ================================== -->
@@ -413,6 +448,7 @@
         </div>
 
       </div>
+
 
 
       <!-- =================================
@@ -459,8 +495,9 @@
       </div>
 
 
+
       <!-- =================================
-           BAGIKAN
+           BAGIKAN REWARDKU
       ================================== -->
 
       <div
@@ -501,6 +538,7 @@
         </div>
 
       </div>
+
 
 
       <!-- =================================
@@ -550,6 +588,257 @@
     </section>
 
 
+
+    <!-- =====================================
+         HALAMAN REWARD
+    ====================================== -->
+
+    <section
+      class="reward-section"
+      id="rewardSection"
+    >
+
+      <div class="section-title">
+
+        <div>
+
+          <h3>
+            🎁 Tukar Reward
+          </h3>
+
+          <p>
+            Tukarkan poinmu dengan reward pilihan
+          </p>
+
+        </div>
+
+        <span id="rewardPoints">
+          0 ⭐
+        </span>
+
+      </div>
+
+
+
+      <!-- =================================
+           DAFTAR REWARD
+      ================================== -->
+
+      <div class="reward-grid">
+
+
+        <!-- REWARD 1 -->
+
+        <div class="reward-card">
+
+          <div class="reward-image">
+            🎫
+          </div>
+
+          <div class="reward-info">
+
+            <h4>
+              Voucher Reward
+            </h4>
+
+            <p>
+              Voucher digital
+            </p>
+
+            <div class="reward-bottom">
+
+              <strong>
+                100 ⭐
+              </strong>
+
+              <button
+                type="button"
+                onclick="redeemReward(
+                  'Voucher Reward',
+                  100,
+                  '🎫'
+                )"
+              >
+                Tukar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- REWARD 2 -->
+
+        <div class="reward-card">
+
+          <div class="reward-image">
+            📱
+          </div>
+
+          <div class="reward-info">
+
+            <h4>
+              Pulsa Digital
+            </h4>
+
+            <p>
+              Reward digital
+            </p>
+
+            <div class="reward-bottom">
+
+              <strong>
+                200 ⭐
+              </strong>
+
+              <button
+                type="button"
+                onclick="redeemReward(
+                  'Pulsa Digital',
+                  200,
+                  '📱'
+                )"
+              >
+                Tukar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- REWARD 3 -->
+
+        <div class="reward-card">
+
+          <div class="reward-image">
+            💳
+          </div>
+
+          <div class="reward-info">
+
+            <h4>
+              Saldo Digital
+            </h4>
+
+            <p>
+              Reward saldo digital
+            </p>
+
+            <div class="reward-bottom">
+
+              <strong>
+                500 ⭐
+              </strong>
+
+              <button
+                type="button"
+                onclick="redeemReward(
+                  'Saldo Digital',
+                  500,
+                  '💳'
+                )"
+              >
+                Tukar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- REWARD 4 -->
+
+        <div class="reward-card">
+
+          <div class="reward-image">
+            👑
+          </div>
+
+          <div class="reward-info">
+
+            <h4>
+              Premium Reward
+            </h4>
+
+            <p>
+              Hadiah spesial
+            </p>
+
+            <div class="reward-bottom">
+
+              <strong>
+                750 ⭐
+              </strong>
+
+              <button
+                type="button"
+                onclick="redeemReward(
+                  'Premium Reward',
+                  750,
+                  '👑'
+                )"
+              >
+                Tukar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- =================================
+           RIWAYAT PENUKARAN
+      ================================== -->
+
+      <div class="history-box">
+
+        <div class="history-title">
+
+          <h3>
+            📜 Riwayat Penukaran
+          </h3>
+
+          <button
+            type="button"
+            onclick="clearRewardHistory()"
+          >
+            Hapus
+          </button>
+
+        </div>
+
+
+        <div id="rewardHistory">
+
+          <div class="empty-history">
+            Belum ada penukaran reward.
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+
     <!-- =====================================
          BANNER REWARD
     ====================================== -->
@@ -574,12 +863,13 @@
 
       <button
         type="button"
-        onclick="showMessage('Reward')"
+        onclick="showRewardPage()"
       >
         →
       </button>
 
     </section>
+
 
 
     <!-- =====================================
@@ -611,11 +901,15 @@
   </main>
 
 
+
   <!-- =====================================
        BOTTOM NAVIGATION
   ====================================== -->
 
   <nav class="bottom-nav">
+
+
+    <!-- HOME -->
 
     <button
       type="button"
@@ -634,6 +928,9 @@
     </button>
 
 
+
+    <!-- MISI -->
+
     <button
       type="button"
       onclick="scrollToMission()"
@@ -650,9 +947,12 @@
     </button>
 
 
+
+    <!-- REWARD -->
+
     <button
       type="button"
-      onclick="showMessage('Reward')"
+      onclick="showRewardPage()"
     >
 
       <span class="nav-icon">
@@ -665,6 +965,9 @@
 
     </button>
 
+
+
+    <!-- NOVEL -->
 
     <button
       type="button"
@@ -682,6 +985,9 @@
     </button>
 
 
+
+    <!-- GAME -->
+
     <button
       type="button"
       onclick="showMessage('Game')"
@@ -698,6 +1004,9 @@
     </button>
 
 
+
+    <!-- AKUN -->
+
     <button
       type="button"
       onclick="showMessage('Profil')"
@@ -712,6 +1021,7 @@
       </span>
 
     </button>
+
 
   </nav>
 

@@ -1,75 +1,73 @@
 // ==========================================
-// REWARDKU
-// SISTEM POIN + STATUS MISI
-// ==========================================
-
-
-// ==========================================
-// KONFIGURASI
+// REWARDKU V4
+// SISTEM POIN + MISI + TIMER
 // ==========================================
 
 const DEFAULT_POINTS = 1250;
 
 const POINTS_KEY = "rewardku_points";
-
 const MISSIONS_KEY = "rewardku_missions";
 
-
-// ==========================================
-// DATA MISI
-// ==========================================
-
 const MISSIONS = {
-
   iklan: {
     name: "Melihat Iklan",
-    reward: 20
+    reward: 20,
+    duration: 10,
+    icon: "📺",
+    description: "Selesaikan aktivitas iklan."
   },
 
   novel: {
     name: "Baca Novel",
-    reward: 30
+    reward: 30,
+    duration: 10,
+    icon: "📖",
+    description: "Baca novel selama waktu yang ditentukan."
   },
 
   game: {
     name: "Mainkan Game",
-    reward: 25
+    reward: 25,
+    duration: 10,
+    icon: "🎮",
+    description: "Mainkan game untuk mendapatkan poin."
   },
 
   shortvideo: {
     name: "Menonton Short Video",
-    reward: 20
+    reward: 20,
+    duration: 10,
+    icon: "📱",
+    description: "Tonton video sampai selesai."
   },
 
   login: {
     name: "Login Harian",
-    reward: 10
-  },
-
-  share: {
-    name: "Bagikan RewardKu",
-    reward: 50
+    reward: 10,
+    duration: 0,
+    icon: "📅",
+    description: "Bonus login harian."
   },
 
   survey: {
     name: "Survei Singkat",
-    reward: 40
+    reward: 40,
+    duration: 10,
+    icon: "📋",
+    description: "Selesaikan survei singkat."
   }
-
 };
 
 
 // ==========================================
-// AMBIL POIN
+// POIN
 // ==========================================
 
 function getPoints() {
 
-  const saved =
-    localStorage.getItem(POINTS_KEY);
+  const saved = localStorage.getItem(POINTS_KEY);
 
   if (saved === null) {
-
     localStorage.setItem(
       POINTS_KEY,
       DEFAULT_POINTS
@@ -78,11 +76,9 @@ function getPoints() {
     return DEFAULT_POINTS;
   }
 
-  const number =
-    Number(saved);
+  const number = Number(saved);
 
   if (Number.isNaN(number)) {
-
     localStorage.setItem(
       POINTS_KEY,
       DEFAULT_POINTS
@@ -95,10 +91,6 @@ function getPoints() {
 }
 
 
-// ==========================================
-// SIMPAN POIN
-// ==========================================
-
 function savePoints(value) {
 
   localStorage.setItem(
@@ -108,55 +100,43 @@ function savePoints(value) {
 }
 
 
-// ==========================================
-// TAMPILKAN POIN
-// ==========================================
-
 function updatePoints() {
 
   const element =
     document.getElementById("points");
 
-  if (!element) {
-    return;
-  }
-
-  const points =
-    getPoints();
+  if (!element) return;
 
   element.textContent =
-    points.toLocaleString("id-ID");
+    getPoints().toLocaleString("id-ID");
 }
 
 
 // ==========================================
-// TANGGAL HARI INI
+// TANGGAL
 // ==========================================
 
 function getToday() {
 
-  const now =
-    new Date();
+  const now = new Date();
 
   const year =
     now.getFullYear();
 
   const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
 
   const day =
-    String(
-      now.getDate()
-    ).padStart(2, "0");
+    String(now.getDate())
+      .padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
 
 
 // ==========================================
-// AMBIL DATA MISI
+// DATA MISI
 // ==========================================
 
 function getMissionData() {
@@ -177,10 +157,6 @@ function getMissionData() {
 }
 
 
-// ==========================================
-// SIMPAN DATA MISI
-// ==========================================
-
 function saveMissionData(data) {
 
   localStorage.setItem(
@@ -190,24 +166,14 @@ function saveMissionData(data) {
 }
 
 
-// ==========================================
-// CEK MISI SUDAH DIKLAIM
-// ==========================================
-
 function isMissionClaimed(mission) {
 
   const data =
     getMissionData();
 
-  return (
-    data[mission] === getToday()
-  );
+  return data[mission] === getToday();
 }
 
-
-// ==========================================
-// TANDAI MISI SEBAGAI DIKLAIM
-// ==========================================
 
 function markMissionClaimed(mission) {
 
@@ -222,7 +188,7 @@ function markMissionClaimed(mission) {
 
 
 // ==========================================
-// AMBIL TOMBOL MISI
+// UPDATE TOMBOL
 // ==========================================
 
 function getMissionButton(mission) {
@@ -233,10 +199,6 @@ function getMissionButton(mission) {
 }
 
 
-// ==========================================
-// UPDATE STATUS TOMBOL
-// ==========================================
-
 function updateMissionButtons() {
 
   Object.keys(MISSIONS)
@@ -245,20 +207,14 @@ function updateMissionButtons() {
       const button =
         getMissionButton(mission);
 
-      if (!button) {
-        return;
-      }
+      if (!button) return;
 
-
-      if (
-        isMissionClaimed(mission)
-      ) {
+      if (isMissionClaimed(mission)) {
 
         button.textContent =
           "Sudah ✓";
 
-        button.disabled =
-          true;
+        button.disabled = true;
 
         button.classList.add(
           "claimed"
@@ -266,19 +222,12 @@ function updateMissionButtons() {
 
       } else {
 
-        if (mission === "login") {
+        button.textContent =
+          mission === "login"
+            ? "Klaim"
+            : "Mulai";
 
-          button.textContent =
-            "Klaim";
-
-        } else {
-
-          button.textContent =
-            "Mulai";
-        }
-
-        button.disabled =
-          false;
+        button.disabled = false;
 
         button.classList.remove(
           "claimed"
@@ -290,7 +239,262 @@ function updateMissionButtons() {
 
 
 // ==========================================
-// KLAIM MISI
+// MODAL AKTIVITAS
+// ==========================================
+
+function createMissionModal(
+  mission,
+  reward
+) {
+
+  const data =
+    MISSIONS[mission];
+
+  const old =
+    document.getElementById(
+      "mission-modal"
+    );
+
+  if (old) old.remove();
+
+
+  const modal =
+    document.createElement("div");
+
+  modal.id =
+    "mission-modal";
+
+  modal.innerHTML = `
+
+    <div class="mission-overlay">
+
+      <div class="mission-modal-box">
+
+        <div class="modal-icon">
+          ${data.icon}
+        </div>
+
+        <h2>
+          ${data.name}
+        </h2>
+
+        <p>
+          ${data.description}
+        </p>
+
+        <div
+          id="mission-countdown"
+          class="mission-countdown"
+        >
+          ${data.duration > 0
+            ? data.duration
+            : "✓"}
+        </div>
+
+        <p
+          id="mission-status"
+          class="mission-status"
+        >
+          ${
+            data.duration > 0
+              ? "Sedang memproses..."
+              : "Siap diklaim"
+          }
+        </p>
+
+        <button
+          id="mission-claim-button"
+          class="mission-claim-button"
+          disabled
+        >
+          ${
+            data.duration > 0
+              ? "Tunggu..."
+              : "Klaim +" + reward + " ⭐"
+          }
+        </button>
+
+        <button
+          id="mission-close-button"
+          class="mission-close-button"
+        >
+          Tutup
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+
+  document.body.appendChild(modal);
+
+
+  document
+    .getElementById(
+      "mission-close-button"
+    )
+    .onclick = function() {
+
+      modal.remove();
+
+    };
+
+
+  const claimButton =
+    document.getElementById(
+      "mission-claim-button"
+    );
+
+
+  // ======================================
+  // TIMER
+  // ======================================
+
+  let remaining =
+    data.duration;
+
+
+  if (remaining <= 0) {
+
+    claimButton.disabled =
+      false;
+
+    claimButton.textContent =
+      "Klaim +" + reward + " ⭐";
+
+    claimButton.onclick =
+      function() {
+
+        finishMission(
+          mission,
+          reward,
+          modal
+        );
+
+      };
+
+    return;
+  }
+
+
+  const countdown =
+    document.getElementById(
+      "mission-countdown"
+    );
+
+  const status =
+    document.getElementById(
+      "mission-status"
+    );
+
+
+  const timer =
+    setInterval(function() {
+
+      remaining--;
+
+      countdown.textContent =
+        remaining;
+
+
+      if (remaining <= 0) {
+
+        clearInterval(timer);
+
+        countdown.textContent =
+          "✓";
+
+        status.textContent =
+          "Aktivitas selesai!";
+
+        claimButton.disabled =
+          false;
+
+        claimButton.textContent =
+          "Klaim +" + reward + " ⭐";
+
+
+        claimButton.onclick =
+          function() {
+
+            finishMission(
+              mission,
+              reward,
+              modal
+            );
+
+          };
+
+      }
+
+    }, 1000);
+}
+
+
+// ==========================================
+// SELESAIKAN MISI
+// ==========================================
+
+function finishMission(
+  mission,
+  reward,
+  modal
+) {
+
+  if (
+    isMissionClaimed(mission)
+  ) {
+
+    alert(
+      "⚠️ Misi ini sudah kamu klaim hari ini."
+    );
+
+    if (modal) {
+      modal.remove();
+    }
+
+    updateMissionButtons();
+
+    return;
+  }
+
+
+  let points =
+    getPoints();
+
+
+  points += Number(reward);
+
+
+  savePoints(points);
+
+  markMissionClaimed(
+    mission
+  );
+
+
+  updatePoints();
+
+  updateMissionButtons();
+
+
+  if (modal) {
+    modal.remove();
+  }
+
+
+  alert(
+    "🎉 Berhasil!\n\n" +
+    "+" +
+    reward +
+    " ⭐ berhasil ditambahkan."
+  );
+}
+
+
+// ==========================================
+// KLIK MULAI MISI
 // ==========================================
 
 function claimMission(
@@ -298,19 +502,16 @@ function claimMission(
   reward
 ) {
 
-  // Pastikan misi valid
   if (!MISSIONS[mission]) {
 
-    console.error(
-      "Misi tidak ditemukan:",
-      mission
+    alert(
+      "Misi tidak ditemukan."
     );
 
     return;
   }
 
 
-  // Cegah klaim ulang
   if (
     isMissionClaimed(mission)
   ) {
@@ -325,34 +526,141 @@ function claimMission(
   }
 
 
-  // Ambil poin sekarang
-  let points =
-    getPoints();
+  const data =
+    MISSIONS[mission];
 
 
-  // Tambahkan reward
-  points += Number(reward);
-
-
-  // Simpan
-  savePoints(points);
-
-  markMissionClaimed(mission);
-
-
-  // Update tampilan
-  updatePoints();
-
-  updateMissionButtons();
-
-
-  // Beri informasi
-  alert(
-    "🎉 Selamat!\n\n" +
-    "+" +
-    Number(reward) +
-    " ⭐ berhasil ditambahkan."
+  createMissionModal(
+    mission,
+    data.reward
   );
+}
+
+
+// ==========================================
+// BAGIKAN APLIKASI
+// ==========================================
+
+async function shareApp() {
+
+  if (
+    isMissionClaimed("share")
+  ) {
+
+    alert(
+      "⚠️ Misi bagikan sudah diklaim hari ini."
+    );
+
+    return;
+  }
+
+
+  const shareData = {
+
+    title: "RewardKu",
+
+    text:
+      "Yuk coba RewardKu dan kumpulkan poin!",
+
+    url:
+      window.location.href
+  };
+
+
+  if (
+    navigator.share
+  ) {
+
+    try {
+
+      await navigator.share(
+        shareData
+      );
+
+      let points =
+        getPoints();
+
+      points += 50;
+
+      savePoints(points);
+
+      markMissionClaimed(
+        "share"
+      );
+
+      updatePoints();
+
+      updateMissionButtons();
+
+      alert(
+        "🎉 Berhasil!\n\n" +
+        "+50 ⭐ ditambahkan."
+      );
+
+    } catch (error) {
+
+      console.log(
+        "Share dibatalkan."
+      );
+
+    }
+
+    return;
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      window.location.href
+    );
+
+    alert(
+      "🔗 Link RewardKu berhasil disalin."
+    );
+
+  } catch (error) {
+
+    alert(
+      "Silakan salin link RewardKu secara manual."
+    );
+
+  }
+}
+
+
+// ==========================================
+// NAVIGASI
+// ==========================================
+
+function scrollToMission() {
+
+  const section =
+    document.getElementById(
+      "missionSection"
+    );
+
+  if (!section) return;
+
+  section.scrollIntoView({
+
+    behavior: "smooth",
+
+    block: "start"
+
+  });
+}
+
+
+function scrollToTop() {
+
+  window.scrollTo({
+
+    top: 0,
+
+    behavior: "smooth"
+
+  });
 }
 
 
@@ -372,147 +680,254 @@ function showMessage(message) {
 
 
 // ==========================================
-// BAGIKAN APLIKASI
+// STYLE MODAL
 // ==========================================
 
-async function shareApp() {
+function addMissionModalStyle() {
 
-  const shareData = {
-
-    title: "RewardKu",
-
-    text:
-      "Yuk coba RewardKu dan kumpulkan poin!",
-
-    url:
-      window.location.href
-
-  };
-
-
-  // Jika sudah diklaim
   if (
-    isMissionClaimed("share")
-  ) {
-
-    alert(
-      "⚠️ Misi Bagikan RewardKu sudah kamu klaim hari ini."
-    );
-
-    updateMissionButtons();
-
-    return;
-  }
+    document.getElementById(
+      "mission-modal-style"
+    )
+  ) return;
 
 
-  // Web Share API tersedia
-  if (
-    navigator.share
-  ) {
+  const style =
+    document.createElement("style");
 
-    try {
+  style.id =
+    "mission-modal-style";
 
-      await navigator.share(
-        shareData
-      );
 
-      // Beri reward setelah share berhasil
-      let points =
-        getPoints();
+  style.textContent = `
 
-      points += 50;
+    .mission-overlay {
 
-      savePoints(points);
+      position: fixed;
 
-      markMissionClaimed("share");
+      inset: 0;
 
-      updatePoints();
+      background:
+        rgba(0,0,0,0.65);
 
-      updateMissionButtons();
+      display: flex;
 
-      alert(
-        "🎉 Berhasil!\n\n" +
-        "+50 ⭐ ditambahkan."
-      );
+      align-items: center;
 
-    } catch (error) {
+      justify-content: center;
 
-      // User membatalkan share
-      console.log(
-        "Share dibatalkan."
-      );
+      padding: 20px;
+
+      z-index: 99999;
+
+      backdrop-filter:
+        blur(4px);
     }
 
-    return;
-  }
+
+    .mission-modal-box {
+
+      width: 100%;
+
+      max-width: 390px;
+
+      background: #ffffff;
+
+      border-radius: 28px;
+
+      padding: 30px 24px;
+
+      text-align: center;
+
+      box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.3);
+
+      animation:
+        missionPop
+        0.25s ease;
+    }
 
 
-  // Browser tidak mendukung Share API
-  try {
+    .modal-icon {
 
-    await navigator.clipboard.writeText(
-      window.location.href
-    );
+      width: 75px;
 
-    alert(
-      "🔗 Link RewardKu sudah disalin.\n\n" +
-      "Silakan bagikan kepada teman."
-    );
+      height: 75px;
 
-  } catch (error) {
+      margin: 0 auto 15px;
 
-    alert(
-      "📤 Silakan salin link RewardKu secara manual."
-    );
-  }
+      border-radius: 22px;
+
+      background: #fff0f1;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 42px;
+    }
+
+
+    .mission-modal-box h2 {
+
+      margin: 5px 0 8px;
+
+      color: #222;
+
+      font-size: 23px;
+    }
+
+
+    .mission-modal-box p {
+
+      color: #777;
+
+      line-height: 1.5;
+
+      margin: 8px 0;
+    }
+
+
+    .mission-countdown {
+
+      width: 90px;
+
+      height: 90px;
+
+      margin: 20px auto;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          135deg,
+          #d90416,
+          #ff3345
+        );
+
+      color: white;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 38px;
+
+      font-weight: 800;
+
+      box-shadow:
+        0 8px 25px
+        rgba(217,4,22,0.25);
+    }
+
+
+    .mission-status {
+
+      font-size: 14px;
+
+      min-height: 22px;
+    }
+
+
+    .mission-claim-button {
+
+      width: 100%;
+
+      border: none;
+
+      border-radius: 14px;
+
+      padding: 15px;
+
+      margin-top: 10px;
+
+      background: #d90416;
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+
+    .mission-claim-button:disabled {
+
+      background: #cccccc;
+
+      cursor: not-allowed;
+
+    }
+
+
+    .mission-close-button {
+
+      width: 100%;
+
+      border: none;
+
+      background: transparent;
+
+      color: #777;
+
+      padding: 14px;
+
+      margin-top: 5px;
+
+      font-size: 14px;
+
+    }
+
+
+    @keyframes missionPop {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          scale(0.9)
+          translateY(15px);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          scale(1)
+          translateY(0);
+
+      }
+
+    }
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
 }
 
 
 // ==========================================
-// SCROLL KE MISI
-// ==========================================
-
-function scrollToMission() {
-
-  const section =
-    document.getElementById(
-      "missionSection"
-    );
-
-  if (!section) {
-    return;
-  }
-
-  section.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
-
-
-// ==========================================
-// SCROLL KE ATAS
-// ==========================================
-
-function scrollToTop() {
-
-  window.scrollTo({
-
-    top: 0,
-
-    behavior: "smooth"
-
-  });
-}
-
-
-// ==========================================
-// SAAT HALAMAN DIBUKA
+// START
 // ==========================================
 
 document.addEventListener(
   "DOMContentLoaded",
   function() {
+
+    addMissionModalStyle();
 
     updatePoints();
 

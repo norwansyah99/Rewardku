@@ -2483,3 +2483,812 @@ body.dark-mode .rewardku-profile-about p {
   font-size: 8px;
   font-weight: 800;
 }
+
+
+/* =========================================================
+   RewardKu V9 - REWARD CENTER UPGRADE
+   Detail reward + progress + confirmation
+   ========================================================= */
+
+.rewardku-progress-box {
+  margin: 10px 0 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(217, 4, 22, .14);
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(217,4,22,.08), rgba(255,193,7,.08));
+}
+
+.rewardku-progress-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rewardku-progress-top div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rewardku-progress-top span {
+  font-size: 11px;
+  color: var(--muted, #777);
+}
+
+.rewardku-progress-top strong {
+  font-size: 15px;
+  color: var(--text, #222);
+}
+
+.rewardku-progress-top b {
+  font-size: 12px;
+  color: #d90416;
+}
+
+.rewardku-progress-track {
+  height: 7px;
+  margin: 8px 0 6px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(0,0,0,.08);
+}
+
+.rewardku-progress-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #d90416, #ffb300);
+}
+
+.rewardku-progress-box small {
+  font-size: 9px;
+  color: var(--muted, #777);
+}
+
+.rewardku-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(0,0,0,.58);
+  opacity: 0;
+  animation: rewardkuFadeIn .18s ease forwards;
+}
+
+.rewardku-detail-modal {
+  position: relative;
+  width: min(100%, 430px);
+  max-height: 88vh;
+  overflow: auto;
+  padding: 22px 18px 16px;
+  border-radius: 24px 24px 18px 18px;
+  background: #fff;
+  color: #202124;
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+  transform: translateY(20px);
+  animation: rewardkuSlideUp .22s ease forwards;
+}
+
+.rewardku-detail-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #f2f2f4;
+  color: #555;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.rewardku-detail-icon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  margin: 2px auto 9px;
+  place-items: center;
+  border-radius: 18px;
+  background: #fff0f1;
+  font-size: 31px;
+}
+
+.rewardku-detail-badge,
+.rewardku-confirm-badge {
+  width: fit-content;
+  margin: 0 auto 6px;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: #fff0f1;
+  color: #d90416;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .8px;
+}
+
+.rewardku-detail-modal h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 21px;
+}
+
+.rewardku-detail-desc {
+  margin: 6px auto 14px;
+  max-width: 330px;
+  text-align: center;
+  color: #707078;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.rewardku-detail-cost {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 12px;
+  border-radius: 13px;
+  background: #f7f7f8;
+}
+
+.rewardku-detail-cost span {
+  color: #777;
+  font-size: 10px;
+}
+
+.rewardku-detail-cost strong {
+  color: #d90416;
+  font-size: 15px;
+}
+
+.rewardku-detail-info {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.rewardku-detail-info > div {
+  padding: 10px 11px;
+  border: 1px solid #ececef;
+  border-radius: 12px;
+}
+
+.rewardku-detail-info span {
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.rewardku-detail-info p {
+  margin: 4px 0 0;
+  color: #777;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.rewardku-detail-balance {
+  margin: 10px 0;
+  text-align: center;
+  color: #777;
+  font-size: 10px;
+}
+
+.rewardku-detail-balance strong {
+  color: #222;
+}
+
+.rewardku-detail-primary,
+.rewardku-detail-secondary {
+  width: 100%;
+  min-height: 42px;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.rewardku-detail-primary {
+  background: #d90416;
+  color: #fff;
+}
+
+.rewardku-detail-primary:disabled {
+  background: #dedee2;
+  color: #888;
+}
+
+.rewardku-detail-secondary {
+  margin-top: 7px;
+  background: #f1f1f3;
+  color: #555;
+}
+
+.rewardku-confirm-v9 {
+  border-radius: 22px !important;
+}
+
+.rewardku-confirm-summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  margin: 14px 0;
+  padding: 11px 12px;
+  border-radius: 12px;
+  background: #f7f7f8;
+  font-size: 10px;
+  color: #777;
+}
+
+.rewardku-confirm-summary strong {
+  color: #222;
+  font-size: 11px;
+}
+
+@keyframes rewardkuFadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes rewardkuSlideUp {
+  to { transform: translateY(0); }
+}
+
+body.dark-mode .rewardku-progress-box {
+  background: linear-gradient(135deg, rgba(217,4,22,.13), rgba(255,193,7,.08));
+  border-color: #34343b;
+}
+
+body.dark-mode .rewardku-progress-top strong,
+body.dark-mode .rewardku-progress-top span,
+body.dark-mode .rewardku-progress-box small {
+  color: #ddd;
+}
+
+body.dark-mode .rewardku-detail-modal {
+  background: #1d1d22;
+  color: #f4f4f5;
+}
+
+body.dark-mode .rewardku-detail-close,
+body.dark-mode .rewardku-detail-secondary,
+body.dark-mode .rewardku-detail-cost,
+body.dark-mode .rewardku-confirm-summary {
+  background: #29292f;
+  color: #eee;
+}
+
+body.dark-mode .rewardku-detail-desc,
+body.dark-mode .rewardku-detail-info p,
+body.dark-mode .rewardku-detail-balance {
+  color: #b9b9c0;
+}
+
+body.dark-mode .rewardku-detail-cost span {
+  color: #b9b9c0;
+}
+
+body.dark-mode .rewardku-detail-cost strong,
+body.dark-mode .rewardku-detail-balance strong,
+body.dark-mode .rewardku-confirm-summary strong {
+  color: #fff;
+}
+
+body.dark-mode .rewardku-detail-info > div {
+  border-color: #34343b;
+}
+
+@media (max-width: 480px) {
+  .rewardku-detail-overlay {
+    padding: 8px;
+  }
+
+  .rewardku-detail-modal {
+    padding: 20px 14px 13px;
+    border-radius: 21px 21px 15px 15px;
+  }
+
+  .rewardku-detail-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 27px;
+  }
+
+  .rewardku-detail-modal h2 {
+    font-size: 18px;
+  }
+
+  .rewardku-progress-box {
+    padding: 10px 11px;
+    border-radius: 13px;
+  }
+}
+
+/* =========================================================
+   RewardKu V10 - LEVEL + BADGES
+   ========================================================= */
+
+.rewardku-level-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #fff8db, #fffdf4);
+  border: 1px solid #f0df9b;
+}
+
+.rewardku-level-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 24px;
+  box-shadow: 0 3px 9px rgba(0,0,0,.07);
+}
+
+.rewardku-level-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.rewardku-level-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.rewardku-level-title span {
+  color: #8b8b8b;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .7px;
+}
+
+.rewardku-level-title strong {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.rewardku-level-title b {
+  margin-left: auto;
+  color: #d71920;
+  font-size: 9px;
+}
+
+.rewardku-level-track {
+  height: 7px;
+  margin-top: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(0,0,0,.08);
+}
+
+.rewardku-level-track i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #d71920, #f5b400);
+  transition: width .3s ease;
+}
+
+.rewardku-level-main small {
+  display: block;
+  margin-top: 5px;
+  color: #777;
+  font-size: 8px;
+}
+
+.rewardku-profile-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 16px 0 9px;
+}
+
+.rewardku-profile-section-title h3 {
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.rewardku-profile-section-title span {
+  color: #999;
+  font-size: 8px;
+}
+
+.rewardku-badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.rewardku-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px;
+  border-radius: 12px;
+  border: 1px solid #ededed;
+  background: #fff;
+}
+
+.rewardku-badge-icon {
+  width: 33px;
+  height: 33px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #fff5d5;
+  font-size: 17px;
+}
+
+.rewardku-badge strong {
+  display: block;
+  font-size: 10px;
+}
+
+.rewardku-badge small {
+  display: block;
+  margin-top: 2px;
+  color: #8a8a8a;
+  font-size: 7px;
+  line-height: 1.25;
+}
+
+.rewardku-badge.locked {
+  opacity: .43;
+  filter: grayscale(.8);
+}
+
+.rewardku-badge.earned {
+  border-color: #f0df9b;
+}
+
+body.dark-mode .rewardku-level-card {
+  background: linear-gradient(135deg, #2a2618, #242118);
+  border-color: #5a4b22;
+}
+
+body.dark-mode .rewardku-level-icon,
+body.dark-mode .rewardku-badge {
+  background: #27272d;
+  border-color: #383840;
+}
+
+body.dark-mode .rewardku-level-main small,
+body.dark-mode .rewardku-profile-section-title span,
+body.dark-mode .rewardku-badge small {
+  color: #aaa;
+}
+
+body.dark-mode .rewardku-badge-icon {
+  background: #3b341e;
+}
+
+@media (max-width: 700px) {
+  .rewardku-level-card {
+    margin-top: 11px;
+    padding: 10px;
+  }
+
+  .rewardku-level-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 21px;
+  }
+
+  .rewardku-level-title strong {
+    font-size: 13px;
+  }
+
+  .rewardku-badge {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .rewardku-badges {
+    gap: 5px;
+  }
+
+  .rewardku-badge {
+    padding: 7px;
+    gap: 6px;
+  }
+
+  .rewardku-badge-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+
+  .rewardku-badge strong {
+    font-size: 9px;
+  }
+
+  .rewardku-badge small {
+    font-size: 6.5px;
+  }
+}
+
+/* =========================================================
+   RewardKu V11 - CLOUD ACCOUNT UI
+   ========================================================= */
+
+.rewardku-cloud-badge {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 140;
+  padding: 6px 9px;
+  border-radius: 99px;
+  background: rgba(255,255,255,.93);
+  border: 1px solid #ececec;
+  color: #777;
+  font-size: 9px;
+  font-weight: 800;
+  box-shadow: 0 3px 12px rgba(0,0,0,.1);
+  pointer-events: none;
+}
+
+.rewardku-cloud-badge.online {
+  color: #17884b;
+}
+
+.rewardku-auth-overlay,
+.rewardku-cloud-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 10px;
+  background: rgba(0,0,0,.58);
+  backdrop-filter: blur(4px);
+}
+
+.rewardku-auth-card,
+.rewardku-cloud-card {
+  position: relative;
+  width: min(100%, 430px);
+  max-height: 90vh;
+  overflow: auto;
+  padding: 22px 18px 17px;
+  border-radius: 23px 23px 17px 17px;
+  background: #fff;
+  color: #202124;
+  box-shadow: 0 -15px 50px rgba(0,0,0,.24);
+}
+
+.rewardku-auth-close {
+  position: absolute;
+  top: 9px;
+  right: 11px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f0f0f2;
+  color: #555;
+  font-size: 22px;
+}
+
+.rewardku-auth-logo {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: #fff0f1;
+  font-size: 27px;
+}
+
+.rewardku-auth-card h2,
+.rewardku-cloud-card h2 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.rewardku-auth-card > p,
+.rewardku-cloud-card > p {
+  margin: 5px auto 14px;
+  max-width: 340px;
+  color: #777;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.rewardku-auth-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 4px;
+  margin-bottom: 13px;
+  border-radius: 11px;
+  background: #f2f2f4;
+}
+
+.rewardku-auth-switch button {
+  padding: 8px;
+  border-radius: 8px;
+  background: transparent;
+  color: #777;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.rewardku-auth-switch button.active {
+  background: #fff;
+  color: #d90416;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+#rewardkuAuthForm {
+  display: grid;
+  gap: 6px;
+}
+
+#rewardkuAuthForm label {
+  font-size: 9px;
+  font-weight: 800;
+  color: #555;
+}
+
+#rewardkuAuthForm input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #dddfe3;
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+  color: #222;
+  font-size: 11px;
+}
+
+#rewardkuAuthForm input:focus {
+  border-color: #d90416;
+  box-shadow: 0 0 0 3px rgba(217,4,22,.08);
+}
+
+.rewardku-auth-submit {
+  width: 100%;
+  margin-top: 7px;
+  min-height: 42px;
+  border-radius: 11px;
+  background: #d90416;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.rewardku-auth-submit:disabled {
+  opacity: .55;
+}
+
+.rewardku-auth-status {
+  min-height: 19px;
+  margin-top: 7px;
+  text-align: center;
+  color: #777;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.rewardku-auth-note {
+  margin-top: 10px;
+  padding: 9px;
+  border-radius: 10px;
+  background: #fff8dc;
+  color: #806000;
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.rewardku-cloud-code,
+.rewardku-cloud-balance {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 11px;
+  margin-top: 9px;
+  border-radius: 11px;
+  background: #f7f7f8;
+}
+
+.rewardku-cloud-code span,
+.rewardku-cloud-balance span {
+  color: #777;
+  font-size: 9px;
+}
+
+.rewardku-cloud-code strong,
+.rewardku-cloud-balance strong {
+  color: #222;
+  font-size: 10px;
+  text-align: right;
+}
+
+.rewardku-cloud-logout {
+  width: 100%;
+  margin-top: 8px;
+  padding: 11px;
+  border-radius: 11px;
+  background: #f2f2f4;
+  color: #b0000d;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+body.dark-mode .rewardku-cloud-badge {
+  background: rgba(29,29,34,.95);
+  border-color: #3a3a42;
+  color: #bbb;
+}
+
+body.dark-mode .rewardku-auth-card,
+body.dark-mode .rewardku-cloud-card {
+  background: #1d1d22;
+  color: #f5f5f5;
+}
+
+body.dark-mode .rewardku-auth-card > p,
+body.dark-mode .rewardku-cloud-card > p,
+body.dark-mode .rewardku-auth-status,
+body.dark-mode #rewardkuAuthForm label,
+body.dark-mode .rewardku-cloud-code span,
+body.dark-mode .rewardku-cloud-balance span {
+  color: #aaa;
+}
+
+body.dark-mode .rewardku-auth-switch,
+body.dark-mode .rewardku-cloud-code,
+body.dark-mode .rewardku-cloud-balance,
+body.dark-mode .rewardku-cloud-logout {
+  background: #28282e;
+}
+
+body.dark-mode .rewardku-auth-switch button.active {
+  background: #303036;
+  color: #ff6269;
+}
+
+body.dark-mode #rewardkuAuthForm input {
+  background: #27272d;
+  border-color: #3a3a42;
+  color: #fff;
+}
+
+body.dark-mode .rewardku-cloud-code strong,
+body.dark-mode .rewardku-cloud-balance strong {
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .rewardku-cloud-badge {
+    top: 7px;
+    right: 7px;
+    font-size: 8px;
+  }
+
+  .rewardku-auth-overlay,
+  .rewardku-cloud-overlay {
+    padding: 6px;
+  }
+
+  .rewardku-auth-card,
+  .rewardku-cloud-card {
+    padding: 19px 14px 14px;
+    border-radius: 19px 19px 13px 13px;
+  }
+}

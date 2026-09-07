@@ -1525,7 +1525,9 @@ function openAuthModal() {
     const displayName = nameInput.value.trim().slice(0, 30);
 
     submit.disabled = true;
-    status.textContent = register ? "Membuat akun..." : "Memproses...";
+    status.textContent = mode === "register"
+  ? "Membuat akun..."
+  : "Memproses...";
 
     try {
       let result;

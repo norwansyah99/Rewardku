@@ -1,10 +1,10 @@
-const CACHE_NAME = "rewardku-v8";
+const CACHE_NAME = "rewardku-v7";
 
 const APP_SHELL = [
   "./",
   "./index.html",
   "./style.css",
-  "./app.js?v=15",
+  "./app.js",
   "./manifest.json",
   "./icons/192.png",
   "./icons/512.png"
@@ -32,23 +32,6 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
-
-  const url = new URL(event.request.url);
-
-  // Always fetch app.js from the network so a GitHub update
-  // cannot remain stuck behind the old service-worker cache.
-  if (url.pathname.endsWith("/app.js") || url.pathname.endsWith("app.js")) {
-    event.respondWith(
-      fetch(event.request, { cache: "no-store" })
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
 
   event.respondWith(
     caches.match(event.request).then((cached) => {

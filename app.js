@@ -2092,3 +2092,55 @@ window.redeemReward = redeemReward;
 window.rewardkuOpenCloudRedeemV15 = rewardkuOpenCloudRedeemV15;
 window.rewardkuProcessRedemptionV15 = rewardkuProcessRedemptionV15;
 
+/* =========================================================
+   RewardKu V16 - ROBUST REWARD BUTTON BINDING
+   The reward cards use inline onclick="redeemReward(...)".
+   Bind the actual buttons directly so reward clicks cannot be
+   blocked by an older/global handler.
+   ========================================================= */
+function bindRewardButtonsV16() {
+  const buttons = document.querySelectorAll('.reward-card .reward-bottom button');
+
+  buttons.forEach((button) => {
+    if (button.dataset.rewardkuV16Bound === '1') return;
+
+    const card = button.closest('.reward-card');
+    if (!card) return;
+
+    const nameEl = card.querySelector('h4, h3');
+    const costEl = card.querySelector('.reward-bottom strong, .reward-cost strong');
+    const iconEl = card.querySelector('.reward-image, .reward-icon');
+
+    const rewardName = (nameEl?.textContent || '').trim();
+    const costText = (costEl?.textContent || '').replace(/[^0-9]/g, '');
+    const cost = Number(costText);
+    const icon = (iconEl?.textContent || '🎁').trim() || '🎁';
+
+    if (!rewardName || !Number.isFinite(cost) || cost <= 0) return;
+
+    // Remove the old inline handler so only the V16 handler runs.
+    button.removeAttribute('onclick');
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      rewardkuOpenCloudRedeemV15(rewardName, cost, icon);
+    });
+
+    button.dataset.rewardkuV16Bound = '1';
+  });
+}
+
+function initRewardButtonsV16() {
+  bindRewardButtonsV16();
+
+  // In case another script rebuilds the reward grid later.
+  const observer = new MutationObserver(() => bindRewardButtonsV16());
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initRewardButtonsV16, { once: true });
+} else {
+  initRewardButtonsV16();
+}

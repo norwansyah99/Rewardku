@@ -1925,3 +1925,170 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initRewardKuCloud();
   await renderCloudRewardHistory();
 });
+
+
+/* =========================================================
+   RewardKu V15 - FINAL CLOUD REWARD REDEEM PATCH
+   Bypass old/duplicate reward handlers and always use
+   Supabase RPC redeem_reward for the real deduction.
+   ========================================================= */
+
+async function rewardkuProcessRedemptionV15(rewardName, cost, icon, modal) {
+  const button = document.getElementById("rewardkuV15ConfirmButton");
+
+  if (!rewardkuSupabase) {
+    if (modal) modal.remove();
+    showToast("☁️ Sistem cloud belum aktif.");
+    return;
+  }
+
+  const user = await getCloudUser();
+  if (!user) {
+    if (modal) modal.remove();
+    openAuthModal();
+    return;
+  }
+
+  const numericCost = Number(cost);
+  if (!Number.isFinite(numericCost) || numericCost <= 0) {
+    showToast("❌ Harga reward tidak valid.");
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "⏳ Memproses...";
+  }
+
+  try {
+    const { data, error } = await rewardkuSupabase.rpc("redeem_reward", {
+      p_reward_name: String(rewardName),
+      p_reward_code: String(rewardName).toLowerCase().replace(/\s+/g, "_"),
+      p_cost: numericCost
+    });
+
+    if (error) throw error;
+
+    // Server/database adalah sumber kebenaran saldo.
+    const latestBalance = await getCloudBalance();
+    if (Number.isFinite(latestBalance)) {
+      savePoints(latestBalance);
+    }
+
+    updatePoints();
+    updateRewardPoints();
+    renderRewardHistory();
+    await renderCloudRewardHistory();
+
+    if (modal) modal.remove();
+
+    const redemptionId = data?.redemption_id
+      ? ` (${String(data.redemption_id).slice(0, 8)})`
+      : "";
+
+    showToast(
+      "🎉 Penukaran berhasil. Saldo tersisa " +
+      formatPoints(getPoints()) +
+      " ⭐" + redemptionId
+    );
+  } catch (error) {
+    console.error("RewardKu V15 redemption error:", error);
+
+    const message = String(error?.message || error || "Terjadi kesalahan.");
+
+    if (message.includes("INSUFFICIENT_POINTS")) {
+      showRewardInsufficient(rewardName, numericCost, getPoints());
+    } else if (message.includes("LOGIN_REQUIRED")) {
+      showToast("🔐 Silakan login terlebih dahulu.");
+    } else {
+      showToast("❌ Penukaran gagal: " + message);
+    }
+
+    if (button) {
+      button.disabled = false;
+      button.textContent = "🎁 Ya, Tukarkan";
+    }
+  }
+}
+
+function rewardkuOpenCloudRedeemV15(rewardName, cost, icon) {
+  const old = document.getElementById("rewardku-v15-redeem-modal");
+  if (old) old.remove();
+
+  const points = getPoints();
+  const numericCost = Number(cost);
+
+  if (!Number.isFinite(numericCost) || numericCost <= 0) {
+    showToast("❌ Harga reward tidak valid.");
+    return;
+  }
+
+  if (points < numericCost) {
+    showRewardInsufficient(rewardName, numericCost, points);
+    return;
+  }
+
+  const modal = document.createElement("div");
+  modal.id = "rewardku-v15-redeem-modal";
+  modal.className = "reward-overlay";
+
+  modal.innerHTML = `
+    <div class="reward-modal rewardku-confirm-v10">
+      <div class="reward-modal-icon">${icon || "🎁"}</div>
+      <div class="rewardku-confirm-badge">KONFIRMASI</div>
+      <h2>Tukar ${escapeHtml(rewardName)}?</h2>
+      <p>Gunakan <strong>${formatPoints(numericCost)} ⭐</strong> dari saldo cloud kamu.</p>
+
+      <div class="rewardku-confirm-summary">
+        <span>Poin sekarang</span>
+        <strong>${formatPoints(points)} ⭐</strong>
+        <span>Poin setelah tukar</span>
+        <strong>${formatPoints(points - numericCost)} ⭐</strong>
+      </div>
+
+      <button
+        type="button"
+        class="reward-confirm"
+        id="rewardkuV15ConfirmButton"
+      >
+        🎁 Ya, Tukarkan
+      </button>
+
+      <button
+        type="button"
+        class="reward-cancel"
+        id="rewardkuV15CancelButton"
+      >
+        Batal
+      </button>
+
+      <div style="margin-top:10px;font-size:12px;opacity:.65;text-align:center;">
+        Penukaran diproses dan dicatat oleh server RewardKu.
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const close = () => modal.remove();
+
+  document.getElementById("rewardkuV15CancelButton").onclick = close;
+
+  document.getElementById("rewardkuV15ConfirmButton").onclick = () => {
+    rewardkuProcessRedemptionV15(rewardName, numericCost, icon, modal);
+  };
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) close();
+  });
+}
+
+// Override every old reward entry point with the V15 server-backed flow.
+function redeemReward(rewardName, cost, icon) {
+  rewardkuOpenCloudRedeemV15(rewardName, cost, icon);
+}
+
+window.redeemReward = redeemReward;
+window.rewardkuOpenCloudRedeemV15 = rewardkuOpenCloudRedeemV15;
+window.rewardkuProcessRedemptionV15 = rewardkuProcessRedemptionV15;
+

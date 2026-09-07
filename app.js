@@ -816,15 +816,26 @@ function createFloatingTools() {
   tools.id = "rewardkuFloatingTools";
   tools.className = "rewardku-floating-tools";
 
+  // Tombol Profil floating dihapus. Yang dipertahankan hanya Mode Malam.
   tools.innerHTML = `
     <button type="button" id="rewardkuThemeButton" aria-label="Mode malam">🌙</button>
-    <button type="button" id="rewardkuProfileButton" aria-label="Profil">👤</button>
   `;
 
   document.body.appendChild(tools);
 
   document.getElementById("rewardkuThemeButton").onclick = toggleTheme;
-  document.getElementById("rewardkuProfileButton").onclick = openCloudProfile;
+}
+
+/* ---------- HIDE HEADER / FLOATING PROFILE DUPLICATES ---------- */
+function removeDuplicateProfileButtons() {
+  const selectors = [
+    '.header-actions button[aria-label="Profil"]',
+    '#rewardkuProfileButton'
+  ];
+
+  selectors.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((button) => button.remove());
+  });
 }
 
 /* ---------- HELPERS ---------- */
@@ -841,6 +852,8 @@ function escapeHtml(value) {
 /* ---------- START ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
+  removeDuplicateProfileButtons();
+
   const savedTheme = localStorage.getItem(THEME_KEY) || "light";
 
   applyTheme(savedTheme);

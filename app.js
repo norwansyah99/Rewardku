@@ -1262,7 +1262,7 @@ function refreshV10Stats() {
 document.addEventListener("DOMContentLoaded", refreshV10Stats);
 
 /* =========================================================
-   RewardKu V11 - SUPABASE AUTH + CLOUD DATA
+   RewardKu V14 - SUPABASE AUTH + CLOUD DATA
    Replace the two config values before deploying.
    Use the browser publishable/anon key only.
    Never put a service_role key here.
@@ -1783,36 +1783,60 @@ async function confirmRedeemReward(rewardName, cost, icon, modal) {
     return;
   }
 
-  const { data, error } = await rewardkuSupabase.rpc("redeem_reward", {
-    p_reward_name: rewardName,
-    p_reward_code: rewardName.toLowerCase().replace(/\s+/g, "_"),
-    p_cost: Number(cost)
-  });
+  const confirmButton = document.getElementById("confirmRewardButton");
+  if (confirmButton) {
+    confirmButton.disabled = true;
+    confirmButton.textContent = "⏳ Memproses...";
+  }
 
-  if (error) {
-    console.error(error);
+  try {
+    const { data, error } = await rewardkuSupabase.rpc("redeem_reward", {
+      p_reward_name: rewardName,
+      p_reward_code: rewardName.toLowerCase().replace(/\s+/g, "_"),
+      p_cost: Number(cost)
+    });
 
-    if (String(error.message).includes("INSUFFICIENT_POINTS")) {
-      showRewardInsufficient(rewardName, cost, getPoints());
-    } else {
-      showToast("❌ Penukaran gagal: " + error.message);
-    }
+    if (error) throw error;
+
+    // Ambil saldo terbaru dari server sebagai sumber kebenaran.
+    await syncCloudAccount();
+
+    // Simpan juga riwayat lokal untuk tampilan cepat/profile. Riwayat cloud
+    // kemudian akan menjadi sumber tampilan utama bila tersedia.
+    const history = getRewardHistory();
+    history.unshift({
+      name: rewardName,
+      cost: Number(cost),
+      icon: icon || "🎁",
+      date: new Date().toLocaleString("id-ID"),
+      redemptionId: data?.redemption_id || ""
+    });
+    saveRewardHistory(history.slice(0, 50));
+
+    updatePoints();
+    renderRewardHistory();
+    await renderCloudRewardHistory();
 
     if (modal) modal.remove();
-    return;
+
+    showToast("🎉 Penukaran berhasil. Saldo tersisa " + formatPoints(getPoints()) + " ⭐");
+  } catch (error) {
+    console.error(error);
+
+    const message = String(error?.message || error || "Terjadi kesalahan.");
+    if (message.includes("INSUFFICIENT_POINTS")) {
+      showRewardInsufficient(rewardName, cost, getPoints());
+    } else if (message.includes("LOGIN_REQUIRED")) {
+      showToast("🔐 Silakan login terlebih dahulu.");
+    } else {
+      showToast("❌ Penukaran gagal: " + message);
+    }
+
+    if (confirmButton) {
+      confirmButton.disabled = false;
+      confirmButton.textContent = "🎁 Ya, Tukarkan";
+    }
   }
-
-  if (data?.new_balance !== undefined) {
-    savePoints(Number(data.new_balance));
-  } else {
-    await syncCloudAccount();
-  }
-
-  updatePoints();
-  renderRewardHistory();
-  if (modal) modal.remove();
-
-  showToast("🎉 Penukaran berhasil dicatat. Saldo tersisa " + formatPoints(getPoints()) + " ⭐");
 }
 
 /* ---------- CLOUD REWARD HISTORY ---------- */

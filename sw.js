@@ -1,4 +1,4 @@
-const CACHE_NAME = "rewardku-v10";
+const CACHE_NAME = "rewardku-v11";
 
 const APP_SHELL = [
   "./",
@@ -45,7 +45,7 @@ self.addEventListener("fetch", (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
           return response;
         })
-        .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./index.html")))
+        .catch(() => caches.match(event.request))
     );
     return;
   }

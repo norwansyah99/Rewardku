@@ -1928,13 +1928,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 /* =========================================================
-   RewardKu V15 - FINAL CLOUD REWARD REDEEM PATCH
-   Bypass old/duplicate reward handlers and always use
-   Supabase RPC redeem_reward for the real deduction.
+   RewardKu V18 - FINAL CLOUD REDEMPTION FLOW
+   Menghindari handler reward lama/duplikat.
    ========================================================= */
 
-async function rewardkuProcessRedemptionV15(rewardName, cost, icon, modal) {
-  const button = document.getElementById("rewardkuV15ConfirmButton");
+async function rewardkuRedeemV18(rewardName, cost, icon, modal) {
+  const button = document.getElementById("rewardkuV18ConfirmButton");
 
   if (!rewardkuSupabase) {
     if (modal) modal.remove();
@@ -1950,7 +1949,7 @@ async function rewardkuProcessRedemptionV15(rewardName, cost, icon, modal) {
   }
 
   const numericCost = Number(cost);
-  if (!Number.isFinite(numericCost) || numericCost <= 0) {
+  if (!Number.isInteger(numericCost) || numericCost <= 0) {
     showToast("❌ Harga reward tidak valid.");
     return;
   }
@@ -1969,30 +1968,31 @@ async function rewardkuProcessRedemptionV15(rewardName, cost, icon, modal) {
 
     if (error) throw error;
 
-    // Server/database adalah sumber kebenaran saldo.
+    // Saldo cloud/server menjadi sumber kebenaran.
     const latestBalance = await getCloudBalance();
-    if (Number.isFinite(latestBalance)) {
-      savePoints(latestBalance);
+    if (!Number.isFinite(latestBalance)) {
+      throw new Error("Saldo cloud terbaru tidak dapat dibaca.");
     }
 
+    savePoints(latestBalance);
     updatePoints();
     updateRewardPoints();
-    renderRewardHistory();
+
     await renderCloudRewardHistory();
+    renderRewardHistory();
 
     if (modal) modal.remove();
 
     const redemptionId = data?.redemption_id
-      ? ` (${String(data.redemption_id).slice(0, 8)})`
+      ? " • ID " + String(data.redemption_id).slice(0, 8)
       : "";
 
     showToast(
       "🎉 Penukaran berhasil. Saldo tersisa " +
-      formatPoints(getPoints()) +
-      " ⭐" + redemptionId
+      formatPoints(latestBalance) + " ⭐" + redemptionId
     );
   } catch (error) {
-    console.error("RewardKu V15 redemption error:", error);
+    console.error("RewardKu V18 redemption error:", error);
 
     const message = String(error?.message || error || "Terjadi kesalahan.");
 
@@ -2011,14 +2011,20 @@ async function rewardkuProcessRedemptionV15(rewardName, cost, icon, modal) {
   }
 }
 
-function rewardkuOpenCloudRedeemV15(rewardName, cost, icon) {
-  const old = document.getElementById("rewardku-v15-redeem-modal");
+// Entry point tombol "Tukar" tetap membuka detail reward.
+function redeemReward(rewardName, cost, icon) {
+  showRewardDetail(rewardName, cost, icon);
+}
+
+// Tombol "Lanjut Tukar Reward" membuka konfirmasi V18.
+function redeemRewardConfirmOnly(rewardName, cost, icon) {
+  const old = document.getElementById("rewardku-v18-confirm-modal");
   if (old) old.remove();
 
   const points = getPoints();
   const numericCost = Number(cost);
 
-  if (!Number.isFinite(numericCost) || numericCost <= 0) {
+  if (!Number.isInteger(numericCost) || numericCost <= 0) {
     showToast("❌ Harga reward tidak valid.");
     return;
   }
@@ -2029,7 +2035,7 @@ function rewardkuOpenCloudRedeemV15(rewardName, cost, icon) {
   }
 
   const modal = document.createElement("div");
-  modal.id = "rewardku-v15-redeem-modal";
+  modal.id = "rewardku-v18-confirm-modal";
   modal.className = "reward-overlay";
 
   modal.innerHTML = `
@@ -2046,102 +2052,40 @@ function rewardkuOpenCloudRedeemV15(rewardName, cost, icon) {
         <strong>${formatPoints(points - numericCost)} ⭐</strong>
       </div>
 
-      <button
-        type="button"
-        class="reward-confirm"
-        id="rewardkuV15ConfirmButton"
-      >
+      <button type="button" class="reward-confirm" id="rewardkuV18ConfirmButton">
         🎁 Ya, Tukarkan
       </button>
 
-      <button
-        type="button"
-        class="reward-cancel"
-        id="rewardkuV15CancelButton"
-      >
+      <button type="button" class="reward-cancel" id="rewardkuV18CancelButton">
         Batal
       </button>
 
-      <div style="margin-top:10px;font-size:12px;opacity:.65;text-align:center;">
-        Penukaran diproses dan dicatat oleh server RewardKu.
+      <div style="margin-top:10px;font-size:12px;opacity:.68;text-align:center;">
+        Poin dipotong oleh server RewardKu, bukan oleh browser.
       </div>
     </div>
   `;
 
   document.body.appendChild(modal);
 
-  const close = () => modal.remove();
+  document.getElementById("rewardkuV18CancelButton").onclick = () => modal.remove();
 
-  document.getElementById("rewardkuV15CancelButton").onclick = close;
-
-  document.getElementById("rewardkuV15ConfirmButton").onclick = () => {
-    rewardkuProcessRedemptionV15(rewardName, numericCost, icon, modal);
+  document.getElementById("rewardkuV18ConfirmButton").onclick = () => {
+    rewardkuRedeemV18(rewardName, numericCost, icon, modal);
   };
 
   modal.addEventListener("click", (event) => {
-    if (event.target === modal) close();
+    if (event.target === modal) modal.remove();
   });
-}
-
-// Override every old reward entry point with the V15 server-backed flow.
-function redeemReward(rewardName, cost, icon) {
-  rewardkuOpenCloudRedeemV15(rewardName, cost, icon);
 }
 
 window.redeemReward = redeemReward;
-window.rewardkuOpenCloudRedeemV15 = rewardkuOpenCloudRedeemV15;
-window.rewardkuProcessRedemptionV15 = rewardkuProcessRedemptionV15;
+window.redeemRewardConfirmOnly = redeemRewardConfirmOnly;
+window.rewardkuRedeemV18 = rewardkuRedeemV18;
 
-
-
-/* =========================================================
-   RewardKu V17 - REWARD BUTTON FIX
-   Pastikan tombol "Tukar" benar-benar membuka detail reward.
-   ========================================================= */
-
-function bindRewardButtonsV17() {
-  const buttons = document.querySelectorAll(".reward-card .reward-bottom button");
-
-  buttons.forEach((button) => {
-    if (button.dataset.rewardkuV17Bound === "1") return;
-
-    const card = button.closest(".reward-card");
-    if (!card) return;
-
-    const nameEl = card.querySelector("h4, h3");
-    const costEl = card.querySelector(".reward-bottom strong, .reward-cost strong");
-    const iconEl = card.querySelector(".reward-image, .reward-icon");
-
-    const rewardName = (nameEl?.textContent || "").trim();
-    const cost = Number((costEl?.textContent || "").replace(/[^\d]/g, ""));
-    const icon = (iconEl?.textContent || "🎁").trim() || "🎁";
-
-    if (!rewardName || !Number.isFinite(cost) || cost <= 0) return;
-
-    // Hapus handler inline lama, lalu pasang handler langsung.
-    button.removeAttribute("onclick");
-    button.onclick = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      showRewardDetail(rewardName, cost, icon);
-    };
-
-    button.dataset.rewardkuV17Bound = "1";
-  });
-}
-
-function initRewardButtonsV17() {
-  bindRewardButtonsV17();
-
-  const grid = document.querySelector(".reward-grid, .rewards-grid");
-  if (grid && window.MutationObserver) {
-    const observer = new MutationObserver(() => bindRewardButtonsV17());
-    observer.observe(grid, { childList: true, subtree: true });
-  }
-}
-
-// Fallback capture: walaupun ada handler lama/global, klik reward tetap
-// diarahkan ke modal detail RewardKu.
+/* Pastikan tombol reward HTML tetap masuk ke flow V18.
+   Capture handler menghentikan onclick inline lama sebelum target event.
+*/
 document.addEventListener("click", (event) => {
   const button = event.target?.closest?.(".reward-card .reward-bottom button");
   if (!button) return;
@@ -2154,18 +2098,16 @@ document.addEventListener("click", (event) => {
   const iconEl = card.querySelector(".reward-image, .reward-icon");
 
   const rewardName = (nameEl?.textContent || "").trim();
-  const cost = Number((costEl?.textContent || "").replace(/[^\d]/g, ""));
+  const numericCost = Number((costEl?.textContent || "").replace(/[^\d]/g, ""));
   const icon = (iconEl?.textContent || "🎁").trim() || "🎁";
 
-  if (!rewardName || !Number.isFinite(cost) || cost <= 0) return;
+  if (!rewardName || !Number.isInteger(numericCost) || numericCost <= 0) return;
 
   event.preventDefault();
   event.stopPropagation();
-  showRewardDetail(rewardName, cost, icon);
+  event.stopImmediatePropagation();
+
+  redeemReward(rewardName, numericCost, icon);
 }, true);
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initRewardButtonsV17, { once: true });
-} else {
-  initRewardButtonsV17();
-}
+/* V18 cache bust reminder: index.html will use ?v=18. */

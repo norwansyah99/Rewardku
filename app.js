@@ -816,14 +816,18 @@ function createFloatingTools() {
   tools.id = "rewardkuFloatingTools";
   tools.className = "rewardku-floating-tools";
 
-  // Tombol Profil floating dihapus. Yang dipertahankan hanya Mode Malam.
+  // Floating tools: Mode Malam di atas, Notifikasi di bawah.
   tools.innerHTML = `
     <button type="button" id="rewardkuThemeButton" aria-label="Mode malam">🌙</button>
+    <button type="button" id="rewardkuNotificationButton" aria-label="Notifikasi">🔔</button>
   `;
 
   document.body.appendChild(tools);
 
   document.getElementById("rewardkuThemeButton").onclick = toggleTheme;
+  document.getElementById("rewardkuNotificationButton").onclick = () => {
+    showMessage("Notifikasi");
+  };
 }
 
 /* ---------- HIDE HEADER / FLOATING PROFILE DUPLICATES ---------- */
@@ -1525,9 +1529,7 @@ function openAuthModal() {
     const displayName = nameInput.value.trim().slice(0, 30);
 
     submit.disabled = true;
-    status.textContent = mode === "register"
-  ? "Membuat akun..."
-  : "Memproses...";
+    status.textContent = register ? "Membuat akun..." : "Memproses...";
 
     try {
       let result;

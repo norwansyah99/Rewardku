@@ -1375,6 +1375,47 @@ async function getCloudBalance() {
   return Number(data || 0);
 }
 
+async function syncCloudMissionState() {
+  if (!rewardkuSupabase) return;
+
+  const user = await getCloudUser();
+  if (!user) return;
+
+  try {
+    const { data, error } =
+      await rewardkuSupabase.rpc("get_my_mission_claims");
+
+    if (error) {
+      console.error("Gagal sinkronisasi status misi:", error);
+      return;
+    }
+
+    const today = todayKey();
+    const cloudClaims = Array.isArray(data) ? data.map(String) : [];
+    const state = getMissionState();
+
+    // Sinkronkan status misi dari server ke perangkat ini.
+    Object.keys(MISSIONS).forEach((id) => {
+      if (cloudClaims.includes(id)) {
+        state[id] = today;
+      } else if (state[id] === today) {
+        delete state[id];
+      }
+    });
+
+    if (cloudClaims.includes("share")) {
+      state.share = today;
+    } else if (state.share === today) {
+      delete state.share;
+    }
+
+    saveMissionState(state);
+    updateMissionButtons();
+  } catch (error) {
+    console.error("Gagal membaca status misi cloud:", error);
+  }
+}
+
 async function syncCloudAccount() {
   if (!rewardkuSupabase) {
     updateCloudUI();
@@ -1399,6 +1440,8 @@ async function syncCloudAccount() {
     savePoints(balance);
     updatePoints();
   }
+
+  await syncCloudMissionState();
 }
 
 function updateCloudUI(user, profile) {
@@ -1686,6 +1729,7 @@ async function claimMission(id, amount) {
   }
 
   await syncCloudAccount();
+  await syncCloudMissionState();
   updateMissionButtons();
   showToast("🎉 +" + formatPoints(data?.reward || amount || 0) + " poin masuk ke akun cloud.");
 }

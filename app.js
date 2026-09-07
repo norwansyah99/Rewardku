@@ -2092,55 +2092,80 @@ window.redeemReward = redeemReward;
 window.rewardkuOpenCloudRedeemV15 = rewardkuOpenCloudRedeemV15;
 window.rewardkuProcessRedemptionV15 = rewardkuProcessRedemptionV15;
 
+
+
 /* =========================================================
-   RewardKu V16 - ROBUST REWARD BUTTON BINDING
-   The reward cards use inline onclick="redeemReward(...)".
-   Bind the actual buttons directly so reward clicks cannot be
-   blocked by an older/global handler.
+   RewardKu V17 - REWARD BUTTON FIX
+   Pastikan tombol "Tukar" benar-benar membuka detail reward.
    ========================================================= */
-function bindRewardButtonsV16() {
-  const buttons = document.querySelectorAll('.reward-card .reward-bottom button');
+
+function bindRewardButtonsV17() {
+  const buttons = document.querySelectorAll(".reward-card .reward-bottom button");
 
   buttons.forEach((button) => {
-    if (button.dataset.rewardkuV16Bound === '1') return;
+    if (button.dataset.rewardkuV17Bound === "1") return;
 
-    const card = button.closest('.reward-card');
+    const card = button.closest(".reward-card");
     if (!card) return;
 
-    const nameEl = card.querySelector('h4, h3');
-    const costEl = card.querySelector('.reward-bottom strong, .reward-cost strong');
-    const iconEl = card.querySelector('.reward-image, .reward-icon');
+    const nameEl = card.querySelector("h4, h3");
+    const costEl = card.querySelector(".reward-bottom strong, .reward-cost strong");
+    const iconEl = card.querySelector(".reward-image, .reward-icon");
 
-    const rewardName = (nameEl?.textContent || '').trim();
-    const costText = (costEl?.textContent || '').replace(/[^0-9]/g, '');
-    const cost = Number(costText);
-    const icon = (iconEl?.textContent || '🎁').trim() || '🎁';
+    const rewardName = (nameEl?.textContent || "").trim();
+    const cost = Number((costEl?.textContent || "").replace(/[^\d]/g, ""));
+    const icon = (iconEl?.textContent || "🎁").trim() || "🎁";
 
     if (!rewardName || !Number.isFinite(cost) || cost <= 0) return;
 
-    // Remove the old inline handler so only the V16 handler runs.
-    button.removeAttribute('onclick');
-
-    button.addEventListener('click', (event) => {
+    // Hapus handler inline lama, lalu pasang handler langsung.
+    button.removeAttribute("onclick");
+    button.onclick = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      rewardkuOpenCloudRedeemV15(rewardName, cost, icon);
-    });
+      showRewardDetail(rewardName, cost, icon);
+    };
 
-    button.dataset.rewardkuV16Bound = '1';
+    button.dataset.rewardkuV17Bound = "1";
   });
 }
 
-function initRewardButtonsV16() {
-  bindRewardButtonsV16();
+function initRewardButtonsV17() {
+  bindRewardButtonsV17();
 
-  // In case another script rebuilds the reward grid later.
-  const observer = new MutationObserver(() => bindRewardButtonsV16());
-  observer.observe(document.body, { childList: true, subtree: true });
+  const grid = document.querySelector(".reward-grid, .rewards-grid");
+  if (grid && window.MutationObserver) {
+    const observer = new MutationObserver(() => bindRewardButtonsV17());
+    observer.observe(grid, { childList: true, subtree: true });
+  }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initRewardButtonsV16, { once: true });
+// Fallback capture: walaupun ada handler lama/global, klik reward tetap
+// diarahkan ke modal detail RewardKu.
+document.addEventListener("click", (event) => {
+  const button = event.target?.closest?.(".reward-card .reward-bottom button");
+  if (!button) return;
+
+  const card = button.closest(".reward-card");
+  if (!card) return;
+
+  const nameEl = card.querySelector("h4, h3");
+  const costEl = card.querySelector(".reward-bottom strong, .reward-cost strong");
+  const iconEl = card.querySelector(".reward-image, .reward-icon");
+
+  const rewardName = (nameEl?.textContent || "").trim();
+  const cost = Number((costEl?.textContent || "").replace(/[^\d]/g, ""));
+  const icon = (iconEl?.textContent || "🎁").trim() || "🎁";
+
+  if (!rewardName || !Number.isFinite(cost) || cost <= 0) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  showRewardDetail(rewardName, cost, icon);
+}, true);
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initRewardButtonsV17, { once: true });
 } else {
-  initRewardButtonsV16();
+  initRewardButtonsV17();
 }

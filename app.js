@@ -2111,3 +2111,292 @@ document.addEventListener("click", (event) => {
 }, true);
 
 /* V18 cache bust reminder: index.html will use ?v=18. */
+
+
+/* =========================================================
+   RewardKu V19 - CLEAN REWARD FLOW
+   Alur dibuat mandiri agar tidak bentrok dengan handler reward lama.
+   ========================================================= */
+
+(function initRewardKuV19() {
+  const MONEY = (value) => Number(value || 0).toLocaleString("id-ID");
+
+  function modalShell(id) {
+    const old = document.getElementById(id);
+    if (old) old.remove();
+
+    const modal = document.createElement("div");
+    modal.id = id;
+    Object.assign(modal.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "999999",
+      background: "rgba(0,0,0,.62)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "18px",
+      boxSizing: "border-box"
+    });
+    return modal;
+  }
+
+  function closeModal(id) {
+    document.getElementById(id)?.remove();
+  }
+
+  function readRewardCard(button) {
+    const card = button.closest(".reward-card");
+    if (!card) return null;
+
+    const nameEl = card.querySelector("h4, h3");
+    const costEl =
+      card.querySelector(".reward-bottom strong, .reward-cost strong, strong");
+    const iconEl = card.querySelector(".reward-image, .reward-icon");
+
+    const name = (nameEl?.textContent || "").trim();
+    const cost = Number((costEl?.textContent || "").replace(/[^\d]/g, ""));
+    const icon = (iconEl?.textContent || "🎁").trim() || "🎁";
+
+    if (!name || !Number.isInteger(cost) || cost <= 0) return null;
+    return { name, cost, icon };
+  }
+
+  function showDetailV19(reward) {
+    const points = getPoints();
+    const enough = points >= reward.cost;
+    const modal = modalShell("rewardku-v19-detail-modal");
+
+    const box = document.createElement("div");
+    Object.assign(box.style, {
+      width: "min(420px, 100%)",
+      maxHeight: "90vh",
+      overflowY: "auto",
+      background: "#fff",
+      borderRadius: "22px",
+      padding: "24px",
+      boxSizing: "border-box",
+      boxShadow: "0 24px 80px rgba(0,0,0,.35)",
+      fontFamily: "inherit",
+      color: "#222"
+    });
+
+    box.innerHTML = `
+      <button type="button" id="rkV19DetailClose"
+        style="float:right;border:0;background:#f1f1f1;border-radius:50%;width:38px;height:38px;font-size:24px;cursor:pointer;">×</button>
+      <div style="text-align:center;padding-top:10px;">
+        <div style="width:72px;height:72px;margin:0 auto 12px;border-radius:18px;background:#fff0f2;display:flex;align-items:center;justify-content:center;font-size:38px;">
+          ${reward.icon}
+        </div>
+        <div style="display:inline-block;padding:5px 10px;border-radius:999px;background:#ffe8ec;color:#e20a1a;font-size:11px;font-weight:800;">REWARD</div>
+        <h2 style="margin:12px 0 6px;font-size:24px;">${escapeHtml(reward.name)}</h2>
+        <p style="margin:0;color:#777;font-size:14px;">Gunakan poin untuk menukarkan reward ini.</p>
+      </div>
+
+      <div style="margin-top:20px;padding:14px 16px;border-radius:14px;background:#f7f7f7;display:flex;justify-content:space-between;align-items:center;">
+        <span style="color:#777;">Harga reward</span>
+        <strong style="color:#e20a1a;font-size:18px;">${MONEY(reward.cost)} ⭐</strong>
+      </div>
+
+      <div style="margin-top:12px;padding:14px 16px;border-radius:14px;background:#fff8d9;font-size:13px;">
+        <strong>Saldo kamu:</strong> ${MONEY(points)} ⭐
+      </div>
+
+      <button type="button" id="rkV19DetailRedeem"
+        ${enough ? "" : "disabled"}
+        style="width:100%;margin-top:18px;border:0;border-radius:13px;padding:14px;background:${enough ? "#e20a1a" : "#bbb"};color:#fff;font-weight:800;font-size:15px;cursor:${enough ? "pointer" : "not-allowed"};">
+        ${enough ? "🎁 Lanjut Tukar Reward" : "⭐ Poin Belum Cukup"}
+      </button>
+
+      <button type="button" id="rkV19DetailCancel"
+        style="width:100%;margin-top:10px;border:0;border-radius:13px;padding:13px;background:#f1f1f1;color:#333;font-weight:700;cursor:pointer;">
+        Tutup
+      </button>
+    `;
+
+    modal.appendChild(box);
+    document.body.appendChild(modal);
+
+    document.getElementById("rkV19DetailClose").onclick = () => closeModal("rewardku-v19-detail-modal");
+    document.getElementById("rkV19DetailCancel").onclick = () => closeModal("rewardku-v19-detail-modal");
+
+    if (enough) {
+      document.getElementById("rkV19DetailRedeem").onclick = () => {
+        closeModal("rewardku-v19-detail-modal");
+        showConfirmV19(reward);
+      };
+    }
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal("rewardku-v19-detail-modal");
+    });
+  }
+
+  function showConfirmV19(reward) {
+    const points = getPoints();
+
+    if (points < reward.cost) {
+      showToast("⭐ Poin belum cukup.");
+      return;
+    }
+
+    const modal = modalShell("rewardku-v19-confirm-modal");
+
+    const box = document.createElement("div");
+    Object.assign(box.style, {
+      width: "min(420px, 100%)",
+      background: "#fff",
+      borderRadius: "22px",
+      padding: "24px",
+      boxSizing: "border-box",
+      boxShadow: "0 24px 80px rgba(0,0,0,.35)",
+      color: "#222"
+    });
+
+    box.innerHTML = `
+      <div style="text-align:center;">
+        <div style="font-size:42px;">${reward.icon}</div>
+        <div style="margin-top:8px;display:inline-block;padding:5px 10px;border-radius:999px;background:#fff0bf;color:#9b6a00;font-size:11px;font-weight:800;">KONFIRMASI</div>
+        <h2 style="margin:12px 0 6px;">Tukar ${escapeHtml(reward.name)}?</h2>
+        <p style="margin:0;color:#777;">${MONEY(reward.cost)} ⭐ akan dipotong dari saldo cloud.</p>
+      </div>
+
+      <div style="margin-top:18px;border:1px solid #eee;border-radius:14px;overflow:hidden;">
+        <div style="padding:13px 15px;display:flex;justify-content:space-between;">
+          <span>Poin sekarang</span><strong>${MONEY(points)} ⭐</strong>
+        </div>
+        <div style="padding:13px 15px;display:flex;justify-content:space-between;background:#fafafa;">
+          <span>Poin setelah tukar</span><strong style="color:#e20a1a;">${MONEY(points - reward.cost)} ⭐</strong>
+        </div>
+      </div>
+
+      <button type="button" id="rkV19Confirm"
+        style="width:100%;margin-top:18px;border:0;border-radius:13px;padding:14px;background:#e20a1a;color:#fff;font-weight:800;font-size:15px;cursor:pointer;">
+        🎁 Ya, Tukarkan
+      </button>
+
+      <button type="button" id="rkV19Cancel"
+        style="width:100%;margin-top:10px;border:0;border-radius:13px;padding:13px;background:#f1f1f1;color:#333;font-weight:700;cursor:pointer;">
+        Batal
+      </button>
+    `;
+
+    modal.appendChild(box);
+    document.body.appendChild(modal);
+
+    document.getElementById("rkV19Cancel").onclick = () => closeModal("rewardku-v19-confirm-modal");
+
+    document.getElementById("rkV19Confirm").onclick = async () => {
+      const btn = document.getElementById("rkV19Confirm");
+      btn.disabled = true;
+      btn.textContent = "⏳ Memproses...";
+
+      try {
+        if (!rewardkuSupabase) throw new Error("CLOUD_NOT_READY");
+
+        const user = await getCloudUser();
+        if (!user) {
+          closeModal("rewardku-v19-confirm-modal");
+          openAuthModal();
+          return;
+        }
+
+        const { data, error } = await rewardkuSupabase.rpc("redeem_reward", {
+          p_reward_name: reward.name,
+          p_reward_code: reward.name.toLowerCase().replace(/\s+/g, "_"),
+          p_cost: reward.cost
+        });
+
+        if (error) throw error;
+
+        const newBalance = await getCloudBalance();
+        if (!Number.isFinite(newBalance)) {
+          throw new Error("BALANCE_READ_FAILED");
+        }
+
+        savePoints(newBalance);
+        updatePoints();
+        updateRewardPoints();
+
+        await renderCloudRewardHistory();
+        renderRewardHistory();
+
+        closeModal("rewardku-v19-confirm-modal");
+
+        const idText = data?.redemption_id
+          ? " • ID " + String(data.redemption_id).slice(0, 8)
+          : "";
+
+        showToast("🎉 Berhasil! Saldo sekarang " + MONEY(newBalance) + " ⭐" + idText);
+      } catch (err) {
+        console.error("RewardKu V19 redemption:", err);
+        btn.disabled = false;
+        btn.textContent = "🎁 Ya, Tukarkan";
+
+        const msg = String(err?.message || err || "");
+        if (msg.includes("INSUFFICIENT_POINTS")) {
+          showToast("⭐ Poin tidak cukup.");
+        } else if (msg.includes("LOGIN_REQUIRED")) {
+          showToast("🔐 Silakan login terlebih dahulu.");
+        } else {
+          showToast("❌ Penukaran gagal. Coba lagi.");
+        }
+      }
+    };
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal("rewardku-v19-confirm-modal");
+    });
+  }
+
+  // Global entry point untuk HTML inline lama.
+  window.redeemReward = function (name, cost, icon) {
+    showDetailV19({ name: String(name || ""), cost: Number(cost), icon: icon || "🎁" });
+  };
+
+  function bindRewardCardsV19() {
+    const buttons = document.querySelectorAll(".reward-card .reward-bottom button");
+    buttons.forEach((button) => {
+      if (button.dataset.rkV19Bound === "1") return;
+
+      const reward = readRewardCard(button);
+      if (!reward) return;
+
+      button.removeAttribute("onclick");
+      button.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        showDetailV19(reward);
+      };
+      button.dataset.rkV19Bound = "1";
+    });
+  }
+
+  // Pastikan tombol benar-benar ditangani sebelum handler inline lama.
+  document.addEventListener("click", (event) => {
+    const button = event.target?.closest?.(".reward-card .reward-bottom button");
+    if (!button) return;
+
+    const reward = readRewardCard(button);
+    if (!reward) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    showDetailV19(reward);
+  }, true);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindRewardCardsV19, { once: true });
+  } else {
+    bindRewardCardsV19();
+  }
+
+  const observerTarget = document.querySelector("main.container");
+  if (observerTarget && window.MutationObserver) {
+    const observer = new MutationObserver(() => bindRewardCardsV19());
+    observer.observe(observerTarget, { childList: true, subtree: true });
+  }
+})();

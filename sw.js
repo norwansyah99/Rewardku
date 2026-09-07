@@ -1,4 +1,4 @@
-const CACHE_NAME = "rewardku-v11";
+const CACHE_NAME = "rewardku-v12";
 
 const APP_SHELL = [
   "./",
@@ -22,9 +22,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
       )
     ).then(() => self.clients.claim())
   );
@@ -34,10 +32,11 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
-  const isAppScript = url.pathname.endsWith("/app.js");
-  const isIndex = url.pathname.endsWith("/") || url.pathname.endsWith("/index.html");
+  const critical = url.pathname.endsWith("/app.js") ||
+                   url.pathname.endsWith("/") ||
+                   url.pathname.endsWith("/index.html");
 
-  if (isAppScript || isIndex) {
+  if (critical) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -51,8 +50,8 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).catch(() => caches.match("./index.html"));
-    })
+    caches.match(event.request).then((cached) =>
+      cached || fetch(event.request).catch(() => caches.match("./index.html"))
+    )
   );
 });
